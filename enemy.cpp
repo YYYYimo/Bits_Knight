@@ -119,7 +119,7 @@ void Enemy::enemove()
 void Enemy::rmenemy(int type)
 {
     delete this->m_movie;
-    DropItem dropItem(type);
+    DropItem dropItem(type, x, y);
     GameWindow::scene->addItem(dropItem);
 }
 

@@ -3,7 +3,7 @@
 #include "player.h"
 
 GameWindow::GameWindow(QWidget *parent):
-        QWidget(parent)
+        QWidget(parent), curtime(0)
 {
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,1500,1200);
@@ -22,6 +22,8 @@ GameWindow::GameWindow(QWidget *parent):
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
     timer->start(10);
 
+    setgameTimerLabel();
+
     view->show();
 }
 
@@ -29,6 +31,18 @@ GameWindow::~GameWindow()
 {
     delete view;
     delete scene;
+}
+
+void GameWindow::setgameTimerLabel()
+{
+    gameTimer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
+    timer->start(1000);
+    timerLable = new QLabel(this);
+    QFont font("Arial", 24, QFont::Bold);
+    timerLabel->setFont(font);
+    timerLabel->setGeometry(10, 10, 50, 30);
+    timerLabel->setText("00:00");
 }
 
 void GameWindow::addplayer(int type)
@@ -46,8 +60,43 @@ void GameWindow::addplayer(int type)
     }
 }
 
+void GameWindow::addenemy(int type)
+{
+    switch (type) {
+    case demon:
+        
+        break;
+    default:
+        break;
+    }
+}
+
+void GameWindow::removeItem(QGraphicsItem item)
+{
+    scene->removeItem(item);
+    delete item;
+}
+
 void GameWindow::updateGame()
 {
-    scene->update();
+    scene->advance();
+}
+
+void GameWindow::updateTimerLabel()
+{
+    curtime++;
+    QDateTime currentTime = QDateTime::currentDateTime();
+    // 计算时间差（毫秒）
+    qint64 elapsedTime = startTime.msecsTo(currentTime);
+    // 转换为分钟和秒钟
+    int minutes = static_cast<int>(elapsedTime / 60000);
+    int seconds = static_cast<int>((elapsedTime % 60000) / 1000);
+    // 格式化时间字符串
+    QString timeStr = QString("%1:%2")
+            .arg(minutes, 2, 10, QChar('0'))
+            .arg(seconds, 2, 10, QChar('0'));
+
+    // 更新计时器标签的文本
+    timerLabel->setText(timeStr);
 }
 

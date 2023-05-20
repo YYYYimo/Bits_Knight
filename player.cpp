@@ -12,7 +12,7 @@ Player::Player()
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
 
-    keyRespondTimer = new QTimer;	//构造函数中创建定时器对象，并连接信号槽
+    keyRespondTimer = new QTimer;	//Create a timer object and connect signals and slots in the constructor
     connect(keyRespondTimer, &QTimer::timeout, this, &Player::slotTimeOut);
     keyRespondTimer->start(10);
 }
@@ -33,6 +33,26 @@ void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
 
 bool Player::collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const
 {
+    // Check if the other item is a DropItem
+        const DropItem* dropItem = dynamic_cast<const DropItem*>(other);
+        if (dropItem)
+        {
+            // Get the bounding rectangles of the player and the drop item
+            QRectF playerRect = boundingRect();
+            QRectF dropItemRect = dropItem->boundingRect();
+
+            // Check if the player's rectangle intersects with the drop item's rectangle
+            bool collision = playerRect.intersects(dropItemRect);
+
+            if (collision)
+            {
+                m_hp += 2;
+                GameWindow::removeItem(dropItem);
+            }
+
+            return collision;
+        }
+
     return QGraphicsItem::collidesWithItem(other, mode);
 }
 

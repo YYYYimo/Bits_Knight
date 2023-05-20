@@ -10,5 +10,10 @@
         <file>resource/img/flask_big_blue.png</file>
         <file>resource/img/flask_big_yellow.png</file>
         <file>resource/img/flask_big_green.png</file>
+        <file>resource/gif/big_demon_run.gif</file>
+        <file>resource/gif/big_zombie_run.gif</file>
+        <file>resource/gif/skelet_run.gif</file>
+        <file>resource/gif/small_demon_run.gif</file>
+        <file>resource/gif/small_zombie_run.gif</file>
     </qresource>
 </RCC>

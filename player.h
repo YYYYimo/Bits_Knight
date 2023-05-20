@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include <QObject>
 #include <QGraphicsItem>
+#include "gamewindow.h"
 
 class Player : public QGraphicsObject
 {
