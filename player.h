@@ -21,6 +21,7 @@ public:
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent *event);
 
+
     void advance();
 
     int m_type;
@@ -37,7 +38,6 @@ public:
 private slots:
     void slotTimeOut();
 protected:
-    QRectF boundingRect();
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 };
 

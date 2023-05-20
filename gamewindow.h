@@ -16,9 +16,6 @@ public:
     void updateGame();
     Player* play;
 
-
-private slots:
-private:
     QGraphicsView *view;
     QGraphicsScene *scene;
     QTimer *timer;

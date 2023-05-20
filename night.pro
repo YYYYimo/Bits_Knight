@@ -29,7 +29,9 @@ SOURCES += \
     startmenu.cpp \
     gamewindow.cpp \
     player.cpp \
-    playerangle.cpp
+    playerangle.cpp \
+    enemy.cpp \
+    dropitem.cpp
 
 HEADERS += \
         widget.h \
@@ -37,7 +39,9 @@ HEADERS += \
     gamewindow.h \
     config.h \
     player.h \
-    playerangle.h
+    playerangle.h \
+    enemy.h \
+    dropitem.h
 
 FORMS += \
         widget.ui

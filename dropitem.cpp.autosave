@@ -10,6 +10,9 @@ DropItem::DropItem(int t)
     case blue:
         imgpath = "://resource/img/flask_big_blue.png"; break;
     case yellow:
+        imgpath = "://resource/img/flask_big_yellow.png"; break;
+    case green:
+        imgpath = "://resource/img/flask_big_green.png"; break;
 
     }
 }
