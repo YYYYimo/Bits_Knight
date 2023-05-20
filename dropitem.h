@@ -8,18 +8,18 @@ class DropItem: public QGraphicsItem
 public:
     DropItem(int t);
     ~DropItem();
-    void setPos(qreal x, qreal y);
 
     QRectF boundingRect() const override;
-    bool collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const override;
     int type() const override;
+    void rmdropItem();
 
     int type;
     QString imgpath;
 private:
     qreal m_x;
     qreal m_y;
-
+    qreal wigth;
+    qreal height;
 };
 
 #endif // DROPITEM_H

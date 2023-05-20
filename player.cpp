@@ -7,7 +7,7 @@
 #include <QObject>
 
 Player::Player()
-    : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr)
+    : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), lifespan(0)
 {
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
@@ -120,8 +120,15 @@ void Player::keyReleaseEvent(QKeyEvent *event)
         keyRespondTimer->stop();
 }
 
+void Player::checkPlayerstate()
+{
+    //to do
+}
+
 void Player::slotTimeOut()
 {
+    lifespan++;
+    checkPlayerstate();
     qreal dx = 0;
     qreal dy = 0;
     foreach (int key, keys) {

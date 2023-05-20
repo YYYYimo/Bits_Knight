@@ -36,8 +36,8 @@ GameWindow::~GameWindow()
 void GameWindow::setgameTimerLabel()
 {
     gameTimer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
-    timer->start(1000);
+    connect(gameTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
+    gameTimer->start(1000);
     timerLable = new QLabel(this);
     QFont font("Arial", 24, QFont::Bold);
     timerLabel->setFont(font);
@@ -62,20 +62,62 @@ void GameWindow::addplayer(int type)
 
 void GameWindow::addenemy(int type)
 {
-    switch (type) {
+    int index = curtime % 7;
+    qreal x, y;
+    switch (index) { //根据时间得出怪物出现的位置
+    case 0:
+        x = 10;
+        y = 10;
+        break;
+    case 1:
+        x = 390;
+        y = 10;
+        break;
+    case 2:
+        x = 770;
+        y = 10;
+        break;
+    case 3:
+        x = 1150;
+        y = 10;
+    case 4:
+        x = 1490;
+        y = 50;
+    case 5:
+        x = 1490;
+        y = 420;
+    case 6:
+        x = 1490;
+        y = 800;
+    default:
+        break;
+    }
+
+    switch (type) { //选择加载的怪物类型
+    //todo：对于不同的怪物类型有不同的设定
     case demon:
-        
+        Enemy* ene = new Enemy;
+        ene->setMovie("://resource/gif/small_demon_run.gif");
+        ene->setSpeed(5);
+        ene->setPos(x, y);
+        ene->setHP(10);
+        ene->setAttack(2);
+        enemyvec.push_back(ene);
+        break;
+    case zombie:
+        Enemy* ene = new Enemy;
+        ene->setMovie("://resource/gif/small_zombie_run.gif");
+        ene->setSpeed(5);
+        ene->setPos(x, y);
+        ene->setHP(10);
+        ene->setAttack(2);
+        enemyvec.push_back(ene);
         break;
     default:
         break;
     }
 }
 
-void GameWindow::removeItem(QGraphicsItem item)
-{
-    scene->removeItem(item);
-    delete item;
-}
 
 void GameWindow::updateGame()
 {

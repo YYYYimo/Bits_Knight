@@ -1,8 +1,11 @@
 #include "dropitem.h"
+#include "gamewindow.h"
 #include <QGraphicsPixmapItem>
 
 DropItem::DropItem(int t, qreal x, qreal y):type(t),m_x(x),m_y(y)
 {
+    wigth = 30;
+    height = 30;
     switch(t)
     {
     case red:
@@ -28,6 +31,11 @@ QRectF DropItem::boundingRect() const
     return QRectF(m_x, m_y, width, height);
 }
 
+void DropItem::rmdropItem()
+{
+    GameWindow::scene->removeItem(this);
+    delete this;
+}
 
 
 

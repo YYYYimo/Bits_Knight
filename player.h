@@ -22,20 +22,24 @@ public:
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent *event);
 
+    void checkPlayerstate();
+
 
     void advance();
 
+    QList<int> keys;
+private:
     int m_type;
     int m_hp;
     int m_attack;
     int width;
     int height;
+    int lifespan;
     qreal m_x;
     qreal m_y;
     qreal m_speed;
     QMovie* m_movie;
     QTimer* keyRespondTimer;
-    QList<int> keys;
 private slots:
     void slotTimeOut();
 protected:

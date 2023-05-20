@@ -6,7 +6,10 @@
 Enemy::enemy()
  : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr)
 {
-
+    lifespan = 0;
+    lifespantime = new QTimer(this);
+    connect(gameTimer, SIGNAL(timeout()), this, SLOT(updateEnemy()));
+    lifespantime->start(1000);
 }
 
 QRect Enemy::boundingRect() const
@@ -70,12 +73,6 @@ void Enemy::setAttack(int attack)
     m_attack = attack;
 }
 
-bool Enemy::judge_dead()
-{
-    if (m_hp <= 0)
-        return true;
-}
-
 QPoint Enemy::getPlayerPos(Player *p)
 {
     QPointF playerpos;
@@ -123,6 +120,24 @@ void Enemy::rmenemy(int type)
     GameWindow::scene->addItem(dropItem);
 }
 
+
+
+void Enemy::checkEnemystate()
+{
+    if(m_hp <= 0)
+        rmenemy(m_type);
+    else
+    {
+        if(lifespan >= 60)
+            uplevel();
+    }
+}
+
+void Enemy::updateEnemy()
+{
+    lifespan++;
+    checkEnemystate();
+}
 
 
 
