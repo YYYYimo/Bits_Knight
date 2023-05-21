@@ -3,11 +3,13 @@
 #include <QObject>
 #include <QGraphicsItem>
 #include "gamewindow.h"
+#include "bullet.h"
 
 class Player : public QGraphicsObject
 {
     Q_OBJECT
     friend class GameWindow;
+    friend class Bullet;
 public:
     Player();
 
@@ -23,8 +25,9 @@ public:
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent *event);
     void takeDamage(int dam);
+    void attack();
 
-    void advance();
+    void advance(); //to do: 设计人物在每一帧刷新后的逻辑
 
     QList<int> keys;
 private:

@@ -21,7 +21,7 @@ GameWindow::GameWindow(QWidget *parent):
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
     timer->start(10);
-
+    startTime = QDateTime::currentDateTime();
     setgameTimerLabel();
 
     view->show();
@@ -38,7 +38,7 @@ void GameWindow::setgameTimerLabel()
     gameTimer = new QTimer(this);
     connect(gameTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
     gameTimer->start(1000);
-    timerLable = new QLabel(this);
+    timerLabel = new QLabel(this);
     QFont font("Arial", 24, QFont::Bold);
     timerLabel->setFont(font);
     timerLabel->setGeometry(10, 10, 50, 30);
@@ -97,26 +97,30 @@ void GameWindow::addenemy(int type)
         switch (type)
         { //选择加载的怪物类型
         //todo：对于不同的怪物类型有不同的设定
-        case demon:
-            Enemy* ene = new Enemy;
-            ene->setMovie("://resource/gif/small_demon_run.gif");
-            ene->setSpeed(5);
-            ene->setPos(x, y);
-            ene->setHP(10);
-            ene->setAttack(2);
-            scene->addItem(ene);
+        case 0:
+        {
+            Enemy* ene1 = new Enemy;
+            ene1->setMovie("://resource/gif/small_demon_run.gif");
+            ene1->setSpeed(5);
+            ene1->setPos(x, y);
+            ene1->setHP(10);
+            ene1->setAttack(2);
+            scene->addItem(ene1);
             enemynum++;
             break;
-        case zombie:
-            Enemy* ene = new Enemy;
-            ene->setMovie("://resource/gif/small_zombie_run.gif");
-            ene->setSpeed(5);
-            ene->setPos(x, y);
-            ene->setHP(10);
-            ene->setAttack(2);
-            scene->addItem(ene);
+        }
+        case 1:
+        {
+            Enemy* ene2 = new Enemy;
+            ene2->setMovie("://resource/gif/small_zombie_run.gif");
+            ene2->setSpeed(5);
+            ene2->setPos(x, y);
+            ene2->setHP(10);
+            ene2->setAttack(2);
+            scene->addItem(ene2);
             enemynum++;
             break;
+        }
         default:
             break;
         }

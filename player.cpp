@@ -33,26 +33,22 @@ void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
 
 bool Player::collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const
 {
-    // Check if the other item is a DropItem
-        const DropItem* dropItem = dynamic_cast<const DropItem*>(other);
-        if (dropItem)
-        {
-            // Get the bounding rectangles of the player and the drop item
-            QRectF playerRect = boundingRect();
-            QRectF dropItemRect = dropItem->boundingRect();
-
-            // Check if the player's rectangle intersects with the drop item's rectangle
-            bool collision = playerRect.intersects(dropItemRect);
-
-            if (collision)
-            {
-                m_hp += 2;
-                DropItem::rmdropItem(dropItem);
-            }
-            return collision;
+    DropItem* item = qgraphicsitem_cast<const DropItem*>(other);
+    if(item)
+    {
+        switch (item->type) {
+        case red:
+            m_hp += 2;
+            scene()->removeItem(item);
+            break;
+            //to do: 不同的待设计掉落物类型
+        default:
+            break;
         }
-
-    return QGraphicsItem::collidesWithItem(other, mode);
+        return true;
+    }
+    else
+        return false;
 }
 
 int Player::type() const
@@ -154,6 +150,15 @@ void Player::slotTimeOut()
 void Player::takeDamage(int dam)
 {
     m_hp -= dam;
+}
+
+void Player::attack()
+{
+    if(lifespan != 0 && lifespan % 3 == 0)
+    {
+        Bullet* bull = new Bullet(type, m_x, m_y);
+        scene()->addItem(bull);
+    }
 }
 
 

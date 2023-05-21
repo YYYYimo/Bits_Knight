@@ -152,6 +152,15 @@ void Enemy::uplevel()
     //to do
 }
 
+void Enemy::attack(int type)
+{
+     //to do:用碰撞检测来控制敌人对玩家发起进攻，对于攻击范围不同的敌人重写shape（）函数
+    if(this->collidesWithItem(Player*))
+    {
+        Player::takeDamage(m_attack);
+    }
+}
+
 
 
 
