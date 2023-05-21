@@ -2,17 +2,17 @@
 #include "dropitem.h"
 #include "gamewindow.h"
 #include <QPixmap>
-
-Enemy::enemy()
+#include <QMovie>
+Enemy::Enemy()
  : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), width()
 {
     lifespan = 0;
     lifespantime = new QTimer(this);
-    connect(gameTimer, SIGNAL(timeout()), this, SLOT(updateEnemy()));
+    connect(lifespantime, SIGNAL(timeout()), this, SLOT(updateEnemy()));
     lifespantime->start(1000);
 }
 
-QRect Enemy::boundingRect() const
+QRectF Enemy::boundingRect() const
 {
     return QRectF(m_x, m_y, width, height);
 }
@@ -83,7 +83,7 @@ QPoint Enemy::getPlayerPos(Player *p)
 
 void Enemy::enemove()
 {
-    QPointF playerpos = getPlayerPos(GameWindow.play);
+    QPointF playerpos = getPlayerPos(GameWindow::play);
     qreal x = playerpos.x();
     qreal y = playerpos.y();
     qreal dx = 0, dy = 0;
@@ -115,10 +115,9 @@ void Enemy::enemove()
 void Enemy::rmenemy(int type)
 {
     delete this->m_movie;
-    DropItem dropItem(type, m_x, m_y);
-    GameWindow::scene->addItem(dropItem);
+    DropItem* dropItem = new DropItem(m_type, m_x, m_y);
+    scene()->addItem(dropItem);
     delete this;
-    this = nullptr;
 }
 
 
@@ -155,9 +154,9 @@ void Enemy::uplevel()
 void Enemy::attack(int type)
 {
      //to do:用碰撞检测来控制敌人对玩家发起进攻，对于攻击范围不同的敌人重写shape（）函数
-    if(this->collidesWithItem(Player*))
+    if(this->collidesWithItem(GameWindow::play))
     {
-        Player::takeDamage(m_attack);
+        GameWindow::play->takeDamage(m_attack);
     }
 }
 

@@ -7,6 +7,7 @@
 #include "enemy.h"
 #include "gamewindow.h"
 enum bullettype {angel, elf, demon};
+class Enemy;
 class Bullet : public QGraphicsItem
 {
 public:

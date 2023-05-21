@@ -4,14 +4,16 @@
 #include <QGraphicsItem>
 #include <QPoint>
 #include <QTimer>
+#include <QObject>
 #include "player.h"
 #include "gamewindow.h"
 
 class Player;
-class Enemy : public QGraphicsItem
+class Enemy : public QGraphicsItem, public QObject
 {
+    friend class Player;
 public:
-    enemy();
+    Enemy();
 
     QRectF boundingRect() const override;
     bool collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const override;

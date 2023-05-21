@@ -130,6 +130,7 @@ void GameWindow::addenemy(int type)
 
 void GameWindow::updateGame()
 {
+    checkPlayerstate();
     scene->advance();
 }
 
