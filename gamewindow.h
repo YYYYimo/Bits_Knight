@@ -20,10 +20,10 @@ public:
     ~GameWindow();
     void addplayer(int type);
     void addenemy(int type);
-    void removeItem(QGraphicsItem item);
     void setgameTimerLabel();
+    void checkPlayerstate();//to do
+    //void nextlevel(); to do
     Player* play;
-    std::vector<Enemy*> enemyvec;
     int enemynum;
     int curtime;
     QGraphicsView *view;

@@ -11,7 +11,7 @@ public:
 
     QRectF boundingRect() const override;
     int type() const override;
-    void rmdropItem();
+    void rmdropItem(DropItem* item);
 
     int type;
     QString imgpath;

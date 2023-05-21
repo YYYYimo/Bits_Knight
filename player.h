@@ -7,6 +7,7 @@
 class Player : public QGraphicsObject
 {
     Q_OBJECT
+    friend class GameWindow;
 public:
     Player();
 
@@ -21,9 +22,7 @@ public:
     void setAttack(int attack);
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent *event);
-
-    void checkPlayerstate();
-
+    void takeDamage(int dam);
 
     void advance();
 

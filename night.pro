@@ -31,7 +31,8 @@ SOURCES += \
     player.cpp \
     playerangle.cpp \
     enemy.cpp \
-    dropitem.cpp
+    dropitem.cpp \
+    bullet.cpp
 
 HEADERS += \
         widget.h \
@@ -41,7 +42,8 @@ HEADERS += \
     player.h \
     playerangle.h \
     enemy.h \
-    dropitem.h
+    dropitem.h \
+    bullet.h
 
 FORMS += \
         widget.ui

@@ -47,9 +47,8 @@ bool Player::collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode 
             if (collision)
             {
                 m_hp += 2;
-                GameWindow::removeItem(dropItem);
+                DropItem::rmdropItem(dropItem);
             }
-
             return collision;
         }
 
@@ -120,11 +119,6 @@ void Player::keyReleaseEvent(QKeyEvent *event)
         keyRespondTimer->stop();
 }
 
-void Player::checkPlayerstate()
-{
-    //to do
-}
-
 void Player::slotTimeOut()
 {
     lifespan++;
@@ -155,6 +149,11 @@ void Player::slotTimeOut()
         m_y += dy;
         setPos(m_x, m_y);
     }
+}
+
+void Player::takeDamage(int dam)
+{
+    m_hp -= dam;
 }
 
 

@@ -4,7 +4,7 @@
 #include <QPixmap>
 
 Enemy::enemy()
- : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr)
+ : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), width()
 {
     lifespan = 0;
     lifespantime = new QTimer(this);
@@ -21,7 +21,6 @@ void Enemy::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
-    enemove();
     QImage image = m_movie->currentImage();
     painter->drawImage(QRectF(m_x, m_y, width, height), image);
     update();
@@ -33,7 +32,7 @@ bool Enemy::collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode m
 }
 
 
-void Player::setMovie(const QString& path)
+void Enemy::setMovie(const QString& path)
 {
     // 设置角色的动画
     if (m_movie)
@@ -116,8 +115,10 @@ void Enemy::enemove()
 void Enemy::rmenemy(int type)
 {
     delete this->m_movie;
-    DropItem dropItem(type, x, y);
+    DropItem dropItem(type, m_x, m_y);
     GameWindow::scene->addItem(dropItem);
+    delete this;
+    this = nullptr;
 }
 
 
@@ -137,8 +138,19 @@ void Enemy::updateEnemy()
 {
     lifespan++;
     checkEnemystate();
+    if(this)
+        enemove();
 }
 
+void Enemy::takeDamage(int dam)
+{
+    m_hp -= dam;
+}
+
+void Enemy::uplevel()
+{
+    //to do
+}
 
 
 

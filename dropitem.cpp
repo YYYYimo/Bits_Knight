@@ -31,9 +31,9 @@ QRectF DropItem::boundingRect() const
     return QRectF(m_x, m_y, width, height);
 }
 
-void DropItem::rmdropItem()
+void DropItem::rmdropItem(DropItem* item)
 {
-    GameWindow::scene->removeItem(this);
+    GameWindow::scene->removeItem(item);
     delete this;
 }
 

@@ -18,7 +18,8 @@ public:
     QPoint getPlayerPos(Player *p); //定位玩家位置
     void enemove(); //敌人移动逻辑
     void rmenemy(int type);
-    //void uplevel();   todo: 怪物生成一段时间后自动升级为大怪物
+    void uplevel();  // todo: 怪物生成一段时间后自动升级为大怪物
+    void takeDamage(int dam);
 
     void setMovie(const QString& path);
     void setSpeed(qreal speed);

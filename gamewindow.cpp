@@ -92,29 +92,34 @@ void GameWindow::addenemy(int type)
     default:
         break;
     }
-
-    switch (type) { //选择加载的怪物类型
-    //todo：对于不同的怪物类型有不同的设定
-    case demon:
-        Enemy* ene = new Enemy;
-        ene->setMovie("://resource/gif/small_demon_run.gif");
-        ene->setSpeed(5);
-        ene->setPos(x, y);
-        ene->setHP(10);
-        ene->setAttack(2);
-        enemyvec.push_back(ene);
-        break;
-    case zombie:
-        Enemy* ene = new Enemy;
-        ene->setMovie("://resource/gif/small_zombie_run.gif");
-        ene->setSpeed(5);
-        ene->setPos(x, y);
-        ene->setHP(10);
-        ene->setAttack(2);
-        enemyvec.push_back(ene);
-        break;
-    default:
-        break;
+    if(enemynum <= 7)
+    {
+        switch (type)
+        { //选择加载的怪物类型
+        //todo：对于不同的怪物类型有不同的设定
+        case demon:
+            Enemy* ene = new Enemy;
+            ene->setMovie("://resource/gif/small_demon_run.gif");
+            ene->setSpeed(5);
+            ene->setPos(x, y);
+            ene->setHP(10);
+            ene->setAttack(2);
+            scene->addItem(ene);
+            enemynum++;
+            break;
+        case zombie:
+            Enemy* ene = new Enemy;
+            ene->setMovie("://resource/gif/small_zombie_run.gif");
+            ene->setSpeed(5);
+            ene->setPos(x, y);
+            ene->setHP(10);
+            ene->setAttack(2);
+            scene->addItem(ene);
+            enemynum++;
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -140,5 +145,21 @@ void GameWindow::updateTimerLabel()
 
     // 更新计时器标签的文本
     timerLabel->setText(timeStr);
+}
+
+void GameWindow::checkPlayerstate()
+{
+    if(play->m_hp <= 0)
+    {
+        timer->stop();
+        gameTimer->stop();
+        //加载失败界面
+    }
+    if(curtime == 120)
+    {
+        timer->stop();
+        gameTimer->stop();
+        //nextlevel();
+    }
 }
 
