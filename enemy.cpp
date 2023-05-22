@@ -6,10 +6,12 @@
 Enemy::Enemy()
  : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), width()
 {
+    //对于具体的敌人给出构造函数，同player的做法
     lifespan = 0;
-    lifespantime = new QTimer(this);
+    lifespantime = new QTimer(this);//试用匿名函数实现
     connect(lifespantime, SIGNAL(timeout()), this, SLOT(updateEnemy()));
     lifespantime->start(1000);
+    //实现每一帧敌人图像的刷新————update time//updateenemy（）
 }
 
 QRectF Enemy::boundingRect() const
@@ -28,7 +30,7 @@ void Enemy::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 
 bool Enemy::collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const
 {
-    return QGraphicsItem::collidesWithItem(other, mode);
+    return QGraphicsItem::collidesWithItem(other, mode);//default
 }
 
 
@@ -81,9 +83,9 @@ QPoint Enemy::getPlayerPos(Player *p)
     return point;
 }
 
-void Enemy::enemove()
+void Enemy::enemove()//reconstruct
 {
-    QPointF playerpos = getPlayerPos(GameWindow::play);
+    QPointF playerpos = getPlayerPos(GameWindow::play);//对play的访问
     qreal x = playerpos.x();
     qreal y = playerpos.y();
     qreal dx = 0, dy = 0;
@@ -154,7 +156,7 @@ void Enemy::uplevel()
 void Enemy::attack(int type)
 {
      //to do:用碰撞检测来控制敌人对玩家发起进攻，对于攻击范围不同的敌人重写shape（）函数
-    if(this->collidesWithItem(GameWindow::play))
+    if(this->collidesWithItem(GameWindow::play))//对于play的访问！！！
     {
         GameWindow::play->takeDamage(m_attack);
     }
