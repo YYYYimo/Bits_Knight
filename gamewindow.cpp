@@ -16,7 +16,7 @@ GameWindow::GameWindow(QWidget *parent):
     view->setCacheMode(QGraphicsView::CacheBackground);
     view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
-    addplayer(0);
+    addplayer(0);//根据角色选择界面选择加载的角色
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
