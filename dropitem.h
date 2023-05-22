@@ -8,7 +8,7 @@ class DropItem: public QGraphicsItem
 {
 public:
     DropItem(int t, qreal x, qreal y);
-    ~DropItem();
+    ~DropItem() {}
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
     QRectF boundingRect() const override;
     bool collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode mode) const;

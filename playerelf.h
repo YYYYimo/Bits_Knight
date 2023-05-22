@@ -7,7 +7,7 @@ class playerelf : public Player
 {
 public:
     playerelf();
-    ~playerelf();
+    ~playerelf() {}
 };
 
 #endif // PLAYERELF_H

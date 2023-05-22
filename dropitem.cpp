@@ -2,6 +2,7 @@
 #include "gamewindow.h"
 #include <QGraphicsPixmapItem>
 #include <QImage>
+#include <QPainter>
 
 DropItem::DropItem(int t, qreal x, qreal y):type(t),m_x(x),m_y(y)
 {

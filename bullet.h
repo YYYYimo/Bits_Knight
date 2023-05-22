@@ -12,10 +12,10 @@ class Bullet : public QGraphicsItem
 {
 public:
     Bullet(int t, qreal x, qreal y);
-    ~Bullet();
+    ~Bullet(){}
     
     QRectF boundingRect() const override;
-    bool collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode) const;
+    bool collidesWithItem(QGraphicsItem *other, Qt::ItemSelectionMode mode) const;
     void setPos(qreal x, qreal y);
     void advance();
     void bullmove();

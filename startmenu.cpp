@@ -10,7 +10,7 @@
 StartMenu::StartMenu(QWidget *parent):QWidget(parent)
 {
     setFixedSize(1200, 1200);
-    QPixmap bgimg(":/res/resource/img/startpage.png");
+    QPixmap bgimg("://resource/img/startpage.png");
     QLabel *bgLabel = new QLabel(this);
     bgLabel->setPixmap(bgimg.scaled(size()));
 

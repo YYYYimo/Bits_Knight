@@ -2,6 +2,7 @@
 #include <QPixmap>
 #include <QImage>
 #include <QtMath>
+#include <QList>
 #include <limits>
 #define PI 3.1415926
 Bullet::Bullet(int t, qreal x, qreal y):m_type(t), m_x(x), m_y(y)
@@ -9,16 +10,20 @@ Bullet::Bullet(int t, qreal x, qreal y):m_type(t), m_x(x), m_y(y)
     //子弹发射时选定一个离玩家最近的敌人，并持续追踪
     qreal mindis = std::numeric_limits<qreal>::max();
     target = nullptr;
-    foreach(QGraphicsItem* item, scene()->items())
+    QList<QGraphicsItem*> items = scene()->items();
+    foreach(QGraphicsItem* item, items)
     {
-        Enemy* ene = qgraphicsitem_cast<Enemy*>(item);
-        if(ene)
+        if(item != nullptr)
         {
-            qreal distance = QLineF(play->pos(),ene->pos()).length();
-            if(distance < mindis)
+            Enemy* ene = dynamic_cast<Enemy*>(item);
+            if(ene)
             {
-                mindis = distance;
-                target = ene;
+                qreal distance = QLineF(ene->getPlayerPos(),ene->pos()).length();
+                if(distance < mindis)
+                {
+                    mindis = distance;
+                    target = ene;
+                }
             }
         }
     }

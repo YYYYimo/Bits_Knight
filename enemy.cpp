@@ -3,18 +3,25 @@
 #include "gamewindow.h"
 #include <QPixmap>
 #include <QMovie>
+#include <QtMath>
+#include <QDebug>
+#define PI 3.1415926
 Enemy::Enemy()
- : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), width()
+ : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr)
 {
-    //对于具体的敌人给出构造函数，同player的做法
+    QString imgpath = "://resource/gif/small_demon_run.gif";
+    m_movie = new QMovie(imgpath);
+    m_movie->start();
+
     lifespan = 0;
-    lifespantime = new QTimer(this);//试用匿名函数实现
+    lifespantime = new QTimer(this);
     connect(lifespantime, &QTimer::timeout, this, &Enemy::updateEnemy);
     lifespantime->start(1000);
 
     updatetime = new QTimer(this);
     connect(updatetime, &QTimer::timeout, this, &Enemy::slotTimeOut);
     updatetime->start(15);
+
 }
 
 QRectF Enemy::boundingRect() const
@@ -33,7 +40,8 @@ void Enemy::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 
 bool Enemy::collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode) const
 {
-    return QGraphicsItem::collidesWithItem(other, mode);//default
+    Q_UNUSED(mode)
+    return other->type() == Player::Type;
 }
 
 
@@ -77,47 +85,37 @@ void Enemy::setAttack(int attack)
     m_attack = attack;
 }
 
-QPoint Enemy::getPlayerPos()
+QPointF Enemy::getPlayerPos()
 {
-    QPointF playerpos;
-    playerpos.rx() = play->m_x;
-    playerpos.ry() = play->m_y;
-    QPoint point(playerpos.x(), playerpos.y());
+    QPointF point(play->m_x, play->m_y);
     return point;
 }
 
 void Enemy::enemove()
 {
-    QPointF playerpos = getPlayerPos();
-    qreal x = playerpos.x();
-    qreal y = playerpos.y();
-    qreal dx = 0, dy = 0;
-    qreal dis_x = abs(x - m_x), dis_y = abs(y - m_y);
-    //通过计算x，y移动后敌人和玩家之间缩短的距离来得出最佳移动方案
-    if(((dis_x - m_speed) * (dis_x - m_speed) + dis_y * dis_y) >=
-            (dis_x * dis_x + (dis_y - m_speed) * (dis_y - m_speed)))
+    if (play)
     {
-        //水平方向移动，判断左移还是右移
-        if((x - m_x) >= 0) //右
-            dx = m_speed;
+        qreal deltax = (play->m_x - m_x) * (play->m_x - m_x);
+        qreal deltay = (play->m_y - m_y) * (play->m_y - m_y);
+        if(deltax  <= deltay)
+        {
+            if(play->m_x <= m_x)
+                m_x -= m_speed;
+            else
+                m_x += m_speed;
+        }
         else
-            dx = -m_speed;
+        {
+            if(play->m_y <= m_y)
+                 m_y -= m_speed;
+            else
+                m_y += m_speed;
+        }
+        setPos(m_x, m_y);
     }
-    else
-    {
-        //竖直方向移动，判断上下
-        if((y - m_y) >= 0) //下
-            dy = m_speed;
-        else
-            dy = -m_speed;
-    }
-    // 更新角色的位置
-    m_x += dx;
-    m_y += dy;
-    setPos(m_x, m_y);
 }
 
-void Enemy::rmenemy(int type)
+void Enemy::rmenemy()
 {
     delete this->m_movie;
     if(lifespan < 90)
@@ -144,7 +142,7 @@ void Enemy::uplevel()
 void Enemy::checkEnemystate()
 {
     if(m_hp <= 0)
-        rmenemy(m_type);
+        rmenemy();
     else
     {
         if(lifespan >= 60)
@@ -156,7 +154,7 @@ void Enemy::updateEnemy()
 {
     lifespan++;
     checkEnemystate();
-
+    attack();
 }
 
 void Enemy::takeDamage(int dam)
@@ -164,11 +162,13 @@ void Enemy::takeDamage(int dam)
     m_hp -= dam;
 }
 
-void Enemy::attack(int type)
+void Enemy::attack()
 {
+    QList<QGraphicsItem *> items = collidingItems();
      //to do:用碰撞检测来控制敌人对玩家发起进攻，对于攻击范围不同的敌人重写shape（）函数
-    if(this->collidesWithItem(play, Qt::IntersectsItemShape))
+    if(!collidingItems().isEmpty())
     {
+        qDebug() << play->m_hp;
         play->takeDamage(m_attack);
     }
 }
@@ -177,7 +177,6 @@ void Enemy::slotTimeOut()
 {
     if(this)
         enemove();
-    advance();
 }
 
 

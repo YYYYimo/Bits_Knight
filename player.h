@@ -27,13 +27,14 @@ public:
     void takeDamage(int dam);
     void attack();
 
+
     qreal m_x;
     qreal m_y;
-
+        int m_hp;
 protected:
     QList<int> keys;
     int m_type;
-    int m_hp;
+
     int m_attack;
     int width;
     int height;

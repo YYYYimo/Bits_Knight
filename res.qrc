@@ -16,5 +16,8 @@
         <file>resource/gif/small_zombie_run.gif</file>
         <file>resource/img/bulletForangle.png</file>
         <file>resource/gif/coin.gif</file>
+        <file>resource/img/ui_heart_empty.png</file>
+        <file>resource/img/ui_heart_full.png</file>
+        <file>resource/img/ui_heart_half.png</file>
     </qresource>
 </RCC>

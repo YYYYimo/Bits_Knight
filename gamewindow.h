@@ -8,13 +8,14 @@
 #include <QLabel>
 #include <QDateTime>
 #include <QString>
+#include <QVector>
 #include "player.h"
 #include "enemy.h"
 #include "dropitem.h"
-#include "config.h"
 
 enum Enemytype {_demon = 0,  _zombie = 1};
 class Player;
+class Enemy;
 class GameWindow : public QWidget
 {
     Q_OBJECT
@@ -24,12 +25,14 @@ public:
     void addplayer(int type);
     void addenemy(int type);
     void setgameTimerLabel();
-    void checkPlayerstate();//to do
+    void checkPlayerstate();
+    void showHp();
     //void nextlevel(); to do
     int enemynum;
     int curtime;
     int lastenemytype;
     Player* play;
+    QVector<Enemy*> enevec;
     QDateTime startTime;
     QGraphicsView *view;
     QGraphicsScene *scene;

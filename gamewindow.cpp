@@ -1,6 +1,8 @@
 #include "gamewindow.h"
 #include "playerangle.h"
+#include "enemydemon.h"
 #include "player.h"
+#include <QDebug>
 
 GameWindow::GameWindow(QWidget *parent):
         QWidget(parent), curtime(0)
@@ -12,12 +14,13 @@ GameWindow::GameWindow(QWidget *parent):
     view = new QGraphicsView(scene, this);
     view->resize(1502,1202);
     view->setRenderHint(QPainter::Antialiasing);
-    view->setBackgroundBrush(QPixmap(":/res/resource/img/map/Map001.png"));
+    view->setBackgroundBrush(QPixmap("://resource/img/map/Map001.png"));
     view->setCacheMode(QGraphicsView::CacheBackground);
     view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
-    addplayer(0);//根据角色选择界面选择加载的角色
+    addplayer(0);//根据角色选择界面选择加载的角色 todo
     lastenemytype = 0;
+    enemynum = 0;
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
@@ -40,9 +43,9 @@ void GameWindow::setgameTimerLabel()
     connect(gameTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
     gameTimer->start(1000);
     timerLabel = new QLabel(this);
-    QFont font("Arial", 24, QFont::Bold);
+    QFont font("Arial", 14, QFont::Bold);
     timerLabel->setFont(font);
-    timerLabel->setGeometry(10, 10, 50, 30);
+    timerLabel->setGeometry(10, 10, 80, 30);
     timerLabel->setText("00:00");
 }
 
@@ -83,13 +86,13 @@ void GameWindow::addenemy(int type)
         x = 1150;
         y = 10;
     case 4:
-        x = 1490;
+        x = 1450;
         y = 50;
     case 5:
-        x = 1490;
+        x = 1450;
         y = 420;
     case 6:
-        x = 1490;
+        x = 1450;
         y = 800;
     default:
         break;
@@ -101,26 +104,16 @@ void GameWindow::addenemy(int type)
         //todo：对于不同的怪物类型有不同的设定
         case 0:
         {
-            Enemy* ene1 = new Enemy;
-            ene1->setMovie("://resource/gif/small_demon_run.gif");
-            ene1->setSpeed(5);
-            ene1->setPos(x, y);
-            ene1->setHP(10);
-            ene1->setAttack(2);
+            qDebug() <<"debug";
+            enemydemon* ene1 = new enemydemon(play);
             scene->addItem(ene1);
+            ene1->setPos(x, y);
+            enevec.push_back(ene1);
             enemynum++;
             break;
         }
         case 1:
         {
-            Enemy* ene2 = new Enemy;
-            ene2->setMovie("://resource/gif/small_zombie_run.gif");
-            ene2->setSpeed(5);
-            ene2->setPos(x, y);
-            ene2->setHP(10);
-            ene2->setAttack(2);
-            scene->addItem(ene2);
-            enemynum++;
             break;
         }
         default:
@@ -139,8 +132,8 @@ void GameWindow::updateGame()
 void GameWindow::updateTimerLabel()
 {
     curtime++;
-    addenemy(lastenemytype); //顺便产生新的敌人
-    lastenemytype = -lastenemytype;
+    addenemy(lastenemytype);
+     //顺便产生新的敌人
     QDateTime currentTime = QDateTime::currentDateTime();
     // 计算时间差（毫秒）
     qint64 elapsedTime = startTime.msecsTo(currentTime);
@@ -169,6 +162,17 @@ void GameWindow::checkPlayerstate()
         timer->stop();
         gameTimer->stop();
         //nextlevel(); to do
+    }
+}
+
+void GameWindow::showHp() //to do
+{
+    switch (play->m_hp) {
+    case 0:
+
+        break;
+    default:
+        break;
     }
 }
 

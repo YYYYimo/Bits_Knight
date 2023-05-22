@@ -1,6 +1,6 @@
-#include "playerangle.h"
-#include <QMovie>
-playerAngle::playerAngle()
+#include "enemydemon.h"
+#include <QDebug>
+enemydemon::enemydemon(Player* pl)
 {
     m_type = 0;
     m_hp = 10;
@@ -10,8 +10,9 @@ playerAngle::playerAngle()
     m_x = 0;
     m_y = 0;
     m_speed = 1;
+    play = pl;
 
-    QString imgpath = "://resource/gif/angle.gif";
+    QString imgpath = "://resource/gif/small_demon_run.gif";
     m_movie = new QMovie(imgpath);
     m_movie->start();
 }
