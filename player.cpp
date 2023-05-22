@@ -9,12 +9,16 @@
 Player::Player()
     : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), lifespan(0)
 {   //具体数值在对应玩家角色类中初始化
+    coins = 0;
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
 
     keyRespondTimer = new QTimer(this);	//Create a timer object and connect signals and slots in the constructor
     connect(keyRespondTimer, &QTimer::timeout, this, &Player::slotTimeOut);
-    keyRespondTimer->start(10);
+    keyRespondTimer->start(15);
+
+    lifespantime = new QTimer(this);
+    connect(lifespantime, &QTimer::timeout, this, &Player::updatePlayer);
 }
 
 QRectF Player::boundingRect() const
@@ -31,25 +35,28 @@ void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     update();
 }
 
-bool Player::collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode)
+bool Player::collidesWithItem(QGraphicsItem *other, Qt::ItemSelectionMode mode)
 {
-    //预计会与玩家产生碰撞且需要玩家做出响应的类有障碍物类和掉落物品类，与敌人的碰撞在敌人类中实现
-    DropItem* item = qgraphicsitem_cast<DropItem*>(other);
-    if(item)
+    if(DropItem* item = qgraphicsitem_cast<DropItem*>(other))
     {
         switch (item->type) {
         case red:
+        {
             m_hp += 2;
             scene()->removeItem(item);
             break;
-            //to do: 不同的待设计掉落物类型
+        }
+        case coin:
+        {
+            coins += 1;
+            scene()->removeItem(item);
+            break;
+        }
         default:
             break;
         }
-        return true;
     }
-    else //to do ： collideswithWall
-        return false;
+    //else
 }
 
 void Player::setMovie(const QString& path)
@@ -92,8 +99,6 @@ void Player::setAttack(int attack)
     m_attack = attack;
 }
 
-
-
 void Player::keyPressEvent(QKeyEvent *event)
 {
     if(!event->isAutoRepeat())  //判断如果不是长按时自动触发的按下,就将key值加入容器
@@ -112,7 +117,6 @@ void Player::keyReleaseEvent(QKeyEvent *event)
 
 void Player::slotTimeOut()
 {
-    lifespan++;
     qreal dx = 0;
     qreal dy = 0;
     foreach (int key, keys) {
@@ -139,6 +143,12 @@ void Player::slotTimeOut()
         m_y += dy;
         setPos(m_x, m_y);
     }
+}
+
+void Player::updatePlayer()
+{
+    lifespan++;
+    attack();
 }
 
 void Player::takeDamage(int dam)

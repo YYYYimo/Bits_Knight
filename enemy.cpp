@@ -9,9 +9,12 @@ Enemy::Enemy()
     //对于具体的敌人给出构造函数，同player的做法
     lifespan = 0;
     lifespantime = new QTimer(this);//试用匿名函数实现
-    connect(lifespantime, SIGNAL(timeout()), this, SLOT(updateEnemy()));
+    connect(lifespantime, &QTimer::timeout, this, &Enemy::updateEnemy);
     lifespantime->start(1000);
-    //实现每一帧敌人图像的刷新————update time//updateenemy（）
+
+    updatetime = new QTimer(this);
+    connect(updatetime, &QTimer::timeout, this, &Enemy::slotTimeOut);
+    updatetime->start(15);
 }
 
 QRectF Enemy::boundingRect() const
@@ -28,7 +31,7 @@ void Enemy::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     update();
 }
 
-bool Enemy::collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const
+bool Enemy::collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode) const
 {
     return QGraphicsItem::collidesWithItem(other, mode);//default
 }
@@ -74,18 +77,18 @@ void Enemy::setAttack(int attack)
     m_attack = attack;
 }
 
-QPoint Enemy::getPlayerPos(Player *p)
+QPoint Enemy::getPlayerPos()
 {
     QPointF playerpos;
-    playerpos.rx() = p->m_x;
-    playerpos.ry() = p->m_y;
+    playerpos.rx() = play->m_x;
+    playerpos.ry() = play->m_y;
     QPoint point(playerpos.x(), playerpos.y());
     return point;
 }
 
-void Enemy::enemove()//reconstruct
+void Enemy::enemove()
 {
-    QPointF playerpos = getPlayerPos(GameWindow::play);//对play的访问
+    QPointF playerpos = getPlayerPos();
     qreal x = playerpos.x();
     qreal y = playerpos.y();
     qreal dx = 0, dy = 0;
@@ -117,12 +120,26 @@ void Enemy::enemove()//reconstruct
 void Enemy::rmenemy(int type)
 {
     delete this->m_movie;
-    DropItem* dropItem = new DropItem(m_type, m_x, m_y);
-    scene()->addItem(dropItem);
+    if(lifespan < 90)
+    {
+        DropItem* dropcoin = new DropItem(coin, m_x, m_y);
+        scene()->addItem(dropcoin);
+    }
+    else
+    {
+        DropItem* dropcoin = new DropItem(coin, m_x, m_y);
+        DropItem* dropitem = new DropItem(m_type, m_x + 5, m_y + 5);
+        scene()->addItem(dropcoin);
+        scene()->addItem(dropitem);
+    }
+
     delete this;
 }
 
-
+void Enemy::uplevel()
+{
+    //to do
+}
 
 void Enemy::checkEnemystate()
 {
@@ -139,8 +156,7 @@ void Enemy::updateEnemy()
 {
     lifespan++;
     checkEnemystate();
-    if(this)
-        enemove();
+
 }
 
 void Enemy::takeDamage(int dam)
@@ -148,18 +164,20 @@ void Enemy::takeDamage(int dam)
     m_hp -= dam;
 }
 
-void Enemy::uplevel()
-{
-    //to do
-}
-
 void Enemy::attack(int type)
 {
      //to do:用碰撞检测来控制敌人对玩家发起进攻，对于攻击范围不同的敌人重写shape（）函数
-    if(this->collidesWithItem(GameWindow::play))//对于play的访问！！！
+    if(this->collidesWithItem(play, Qt::IntersectsItemShape))
     {
-        GameWindow::play->takeDamage(m_attack);
+        play->takeDamage(m_attack);
     }
+}
+
+void Enemy::slotTimeOut()
+{
+    if(this)
+        enemove();
+    advance();
 }
 
 

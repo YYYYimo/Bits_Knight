@@ -17,10 +17,11 @@ GameWindow::GameWindow(QWidget *parent):
     view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
     addplayer(0);//根据角色选择界面选择加载的角色
+    lastenemytype = 0;
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
-    timer->start(10);
+    timer->start(15);
     startTime = QDateTime::currentDateTime();//记录游戏开始的时间
     setgameTimerLabel();
 
@@ -52,7 +53,7 @@ void GameWindow::addplayer(int type)
     {
         play = new playerAngle();
         scene->addItem(play);
-        //设置玩家角色初始化时在场景中的位置
+        play->setPos(750, 600);
     }
 
         break;
@@ -132,14 +133,14 @@ void GameWindow::addenemy(int type)
 void GameWindow::updateGame()
 {
     checkPlayerstate();
-    //if(situation) 不同情况下加载不同的敌人
-    addenemy(0);
     scene->advance();
 }
 
 void GameWindow::updateTimerLabel()
 {
     curtime++;
+    addenemy(lastenemytype); //顺便产生新的敌人
+    lastenemytype = -lastenemytype;
     QDateTime currentTime = QDateTime::currentDateTime();
     // 计算时间差（毫秒）
     qint64 elapsedTime = startTime.msecsTo(currentTime);

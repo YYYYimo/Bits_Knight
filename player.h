@@ -14,7 +14,7 @@ public:
     Player();
 
     QRectF boundingRect() const override;
-    bool collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode);
+    bool collidesWithItem(QGraphicsItem *other, Qt::ItemSelectionMode mode);
 
     void setMovie(const QString& path);
     void setSpeed(qreal speed);
@@ -27,7 +27,9 @@ public:
     void takeDamage(int dam);
     void attack();
 
-    void advance(); //to do: 设计人物在每一帧刷新后的逻辑
+    qreal m_x;
+    qreal m_y;
+
 protected:
     QList<int> keys;
     int m_type;
@@ -36,15 +38,16 @@ protected:
     int width;
     int height;
     int lifespan;
-    qreal m_x;
-    qreal m_y;
+    int coins;
+
     qreal m_speed;
     QTimer* keyRespondTimer;
+    QTimer* lifespantime;
     QMovie* m_movie;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 private slots:
     void slotTimeOut();
-
+    void updatePlayer();
 
 };
 

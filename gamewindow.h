@@ -6,11 +6,12 @@
 #include <QGraphicsScene>
 #include <QTimer>
 #include <QLabel>
-#include <vector>
 #include <QDateTime>
+#include <QString>
 #include "player.h"
 #include "enemy.h"
 #include "dropitem.h"
+#include "config.h"
 
 enum Enemytype {_demon = 0,  _zombie = 1};
 class Player;
@@ -25,9 +26,10 @@ public:
     void setgameTimerLabel();
     void checkPlayerstate();//to do
     //void nextlevel(); to do
-    Player* play;
     int enemynum;
     int curtime;
+    int lastenemytype;
+    Player* play;
     QDateTime startTime;
     QGraphicsView *view;
     QGraphicsScene *scene;

@@ -5,6 +5,7 @@
 #include <QPoint>
 #include <QTimer>
 #include <QObject>
+#include "config.h"
 #include "player.h"
 #include "gamewindow.h"
 
@@ -16,9 +17,8 @@ public:
     Enemy();
 
     QRectF boundingRect() const override;
-    bool collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const override;
-    int type() const override;
-    QPoint getPlayerPos(Player *p); //定位玩家位置
+    bool collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode) const;
+    QPoint getPlayerPos(); //定位玩家位置
     void enemove(); //敌人移动逻辑
     void rmenemy(int type);
     void uplevel();  // todo: 怪物生成一段时间后自动升级为大怪物
@@ -33,7 +33,7 @@ public:
     void checkEnemystate();
     void advance();
 
-private:
+protected:
     int m_type;
     int m_hp;
     int m_attack;
@@ -48,6 +48,7 @@ private:
     QTimer* updatetime;//刷新时间
 private slots:
     void updateEnemy();
+    void slotTimeOut();
     //动画刷新界面； 与主场景的联动刷新
     //主场景中不需要实现刷新？只用在item中各自刷新。
 

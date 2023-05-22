@@ -14,5 +14,7 @@
         <file>resource/gif/skelet_run.gif</file>
         <file>resource/gif/small_demon_run.gif</file>
         <file>resource/gif/small_zombie_run.gif</file>
+        <file>resource/img/bulletForangle.png</file>
+        <file>resource/gif/coin.gif</file>
     </qresource>
 </RCC>
