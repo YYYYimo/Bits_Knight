@@ -8,11 +8,11 @@
 
 Player::Player()
     : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), lifespan(0)
-{
+{   //具体数值在对应玩家角色类中初始化
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
 
-    keyRespondTimer = new QTimer;	//Create a timer object and connect signals and slots in the constructor
+    keyRespondTimer = new QTimer(this);	//Create a timer object and connect signals and slots in the constructor
     connect(keyRespondTimer, &QTimer::timeout, this, &Player::slotTimeOut);
     keyRespondTimer->start(10);
 }
@@ -33,6 +33,7 @@ void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
 
 bool Player::collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode)
 {
+    //预计会与玩家产生碰撞且需要玩家做出响应的类有障碍物类和掉落物品类，与敌人的碰撞在敌人类中实现
     DropItem* item = qgraphicsitem_cast<DropItem*>(other);
     if(item)
     {
@@ -47,7 +48,7 @@ bool Player::collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode)
         }
         return true;
     }
-    else
+    else //to do ： collideswithWall
         return false;
 }
 
@@ -147,7 +148,7 @@ void Player::takeDamage(int dam)
 
 void Player::attack()
 {
-    if(lifespan != 0 && lifespan % 3 == 0)
+    if(lifespan != 0 && lifespan % 3 == 0)//设置发射子弹时间间隔
     {
         Bullet* bull = new Bullet(m_type, m_x, m_y);
         scene()->addItem(bull);

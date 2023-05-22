@@ -28,7 +28,7 @@ public:
     void attack();
 
     void advance(); //to do: 设计人物在每一帧刷新后的逻辑
-
+protected:
     QList<int> keys;
     int m_type;
     int m_hp;

@@ -21,7 +21,7 @@ GameWindow::GameWindow(QWidget *parent):
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
     timer->start(10);
-    startTime = QDateTime::currentDateTime();
+    startTime = QDateTime::currentDateTime();//记录游戏开始的时间
     setgameTimerLabel();
 
     view->show();
@@ -52,6 +52,7 @@ void GameWindow::addplayer(int type)
     {
         play = new playerAngle();
         scene->addItem(play);
+        //设置玩家角色初始化时在场景中的位置
     }
 
         break;
@@ -64,7 +65,7 @@ void GameWindow::addenemy(int type)
 {
     int index = curtime % 7;
     qreal x, y;
-    switch (index) { //根据时间得出怪物出现的位置
+    switch (index) { //根据时间得出怪物出现的位置，to do
     case 0:
         x = 10;
         y = 10;
@@ -131,6 +132,8 @@ void GameWindow::addenemy(int type)
 void GameWindow::updateGame()
 {
     checkPlayerstate();
+    //if(situation) 不同情况下加载不同的敌人
+    addenemy(0);
     scene->advance();
 }
 
@@ -158,13 +161,13 @@ void GameWindow::checkPlayerstate()
     {
         timer->stop();
         gameTimer->stop();
-        //加载失败界面
+        //加载失败界面 to do
     }
     if(curtime == 120)
     {
         timer->stop();
         gameTimer->stop();
-        //nextlevel();
+        //nextlevel(); to do
     }
 }
 

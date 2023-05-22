@@ -44,9 +44,12 @@ private:
     qreal m_y;
     qreal m_speed;
     QMovie* m_movie;
-    QTimer* lifespantime;
+    QTimer* lifespantime;//生存时间
+    QTimer* updatetime;//刷新时间
 private slots:
     void updateEnemy();
+    //动画刷新界面； 与主场景的联动刷新
+    //主场景中不需要实现刷新？只用在item中各自刷新。
 
 protected:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
