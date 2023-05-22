@@ -6,15 +6,18 @@
 #include "player.h"
 #include "enemy.h"
 #include "gamewindow.h"
-enum bullettype {angle, elf, demon};
+enum bullettype {angel, elf, demon};
+class Enemy;
 class Bullet : public QGraphicsItem
 {
 public:
-    Bullet(int t);
+    Bullet(int t, qreal x, qreal y);
     ~Bullet();
     
-    QRect boundingRect() const override;
+    QRectF boundingRect() const override;
     bool collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const override;
+    void setPos();
+    void advance();
     void bullmove();
 
 private:

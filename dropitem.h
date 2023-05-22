@@ -10,7 +10,6 @@ public:
     ~DropItem();
 
     QRectF boundingRect() const override;
-    int type() const override;
     void rmdropItem(DropItem* item);
 
     int type;

@@ -4,13 +4,16 @@
 #include <QGraphicsItem>
 #include <QPoint>
 #include <QTimer>
+#include <QObject>
 #include "player.h"
 #include "gamewindow.h"
 
-class Enemy : public QGraphicsItem
+class Player;
+class Enemy : public QGraphicsItem, public QObject
 {
+    friend class Player;
 public:
-    enemy();
+    Enemy();
 
     QRectF boundingRect() const override;
     bool collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const override;
@@ -20,6 +23,7 @@ public:
     void rmenemy(int type);
     void uplevel();  // todo: 怪物生成一段时间后自动升级为大怪物
     void takeDamage(int dam);
+    void attack(int type);
 
     void setMovie(const QString& path);
     void setSpeed(qreal speed);

@@ -31,34 +31,24 @@ void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     update();
 }
 
-bool Player::collidesWithItem(const QGraphicsItem* other, Qt::ItemSelectionMode mode) const
+bool Player::collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode)
 {
-    // Check if the other item is a DropItem
-        const DropItem* dropItem = dynamic_cast<const DropItem*>(other);
-        if (dropItem)
-        {
-            // Get the bounding rectangles of the player and the drop item
-            QRectF playerRect = boundingRect();
-            QRectF dropItemRect = dropItem->boundingRect();
-
-            // Check if the player's rectangle intersects with the drop item's rectangle
-            bool collision = playerRect.intersects(dropItemRect);
-
-            if (collision)
-            {
-                m_hp += 2;
-                DropItem::rmdropItem(dropItem);
-            }
-            return collision;
+    DropItem* item = qgraphicsitem_cast<DropItem*>(other);
+    if(item)
+    {
+        switch (item->type) {
+        case red:
+            m_hp += 2;
+            scene()->removeItem(item);
+            break;
+            //to do: 不同的待设计掉落物类型
+        default:
+            break;
         }
-
-    return QGraphicsItem::collidesWithItem(other, mode);
-}
-
-int Player::type() const
-{
-    // 返回角色的类型
-    return m_type;
+        return true;
+    }
+    else
+        return false;
 }
 
 void Player::setMovie(const QString& path)
@@ -122,7 +112,6 @@ void Player::keyReleaseEvent(QKeyEvent *event)
 void Player::slotTimeOut()
 {
     lifespan++;
-    checkPlayerstate();
     qreal dx = 0;
     qreal dy = 0;
     foreach (int key, keys) {
@@ -154,6 +143,15 @@ void Player::slotTimeOut()
 void Player::takeDamage(int dam)
 {
     m_hp -= dam;
+}
+
+void Player::attack()
+{
+    if(lifespan != 0 && lifespan % 3 == 0)
+    {
+        Bullet* bull = new Bullet(m_type, m_x, m_y);
+        scene()->addItem(bull);
+    }
 }
 
 
