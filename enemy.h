@@ -5,6 +5,7 @@
 #include <QPoint>
 #include <QTimer>
 #include <QObject>
+#include <QPainterPath>
 #include "player.h"
 #include "gamewindow.h"
 
@@ -16,7 +17,7 @@ public:
     Enemy();
 
     QRectF boundingRect() const override;
-    bool collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode) const;
+    QPainterPath shape() const;
     QPointF getPlayerPos(); //定位玩家位置
     void enemove(); //敌人移动逻辑
     void rmenemy();
@@ -32,6 +33,9 @@ public:
     void checkEnemystate();
     void advance();
 
+    qreal m_x;
+    qreal m_y;
+
 protected:
     int m_type;
     int m_hp;
@@ -39,8 +43,6 @@ protected:
     int width;
     int height;
     int lifespan;
-    qreal m_x;
-    qreal m_y;
     qreal m_speed;
     Player* play;
     QMovie* m_movie;

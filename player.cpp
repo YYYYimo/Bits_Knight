@@ -6,10 +6,10 @@
 #include <QTimer>
 #include <QObject>
 #include <QDebug>
-
 Player::Player()
     : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), lifespan(0)
 {   //具体数值在对应玩家角色类中初始化
+
     coins = 0;
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
@@ -20,7 +20,7 @@ Player::Player()
 
     lifespantime = new QTimer(this);
     connect(lifespantime, &QTimer::timeout, this, &Player::updatePlayer);
-    //lifespantime->start(1000);
+    lifespantime->start(1000);
 }
 
 QRectF Player::boundingRect() const
@@ -35,12 +35,6 @@ void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     QImage image = m_movie->currentImage();
     painter->drawImage(QRectF(m_x, m_y, width, height), image);
     update();
-}
-
-bool Player::collidesWithItem(QGraphicsItem *other, Qt::ItemSelectionMode mode)
-{
-    Q_UNUSED(mode)
-    return other->type() == DropItem::Type;
 }
 
 void Player::setMovie(const QString& path)
@@ -132,7 +126,6 @@ void Player::slotTimeOut()
 
 void Player::updatePlayer()
 {
-        qDebug() << "qu";
     lifespan++;
     attack();
 }
@@ -144,9 +137,9 @@ void Player::takeDamage(int dam)
 
 void Player::attack()
 {
-    qDebug() << "qu";
     if(lifespan != 0 && lifespan % 3 == 0)//设置发射子弹时间间隔
     {
+        qDebug() << "quua";
         Bullet* bull = new Bullet(m_type, m_x, m_y);
         scene()->addItem(bull);
     }

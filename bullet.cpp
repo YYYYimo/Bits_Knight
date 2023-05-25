@@ -1,8 +1,12 @@
 #include "bullet.h"
+#include <QDebug>
 #include <QPixmap>
 #include <QImage>
 #include <QtMath>
+#include <QPointF>
+#include <QLineF>
 #include <QList>
+#include <QVector>
 #include <limits>
 #define PI 3.1415926
 Bullet::Bullet(int t, qreal x, qreal y):m_type(t), m_x(x), m_y(y)
@@ -10,23 +14,22 @@ Bullet::Bullet(int t, qreal x, qreal y):m_type(t), m_x(x), m_y(y)
     //子弹发射时选定一个离玩家最近的敌人，并持续追踪
     qreal mindis = std::numeric_limits<qreal>::max();
     target = nullptr;
-    QList<QGraphicsItem*> items = scene()->items();
-    foreach(QGraphicsItem* item, items)
+    QVector<Enemy*>::Iterator it = enevec.begin();
+    for(it = enevec.begin(); it != enevec.end(); ++it)
     {
-        if(item != nullptr)
+        Enemy* e = *it;
+        QPointF point1(m_x, m_y);
+        QPointF point2(e->m_x, e->m_y);
+        QLineF line(point1, point2);
+        qreal dis = line.length();
+        if(dis < mindis)
         {
-            Enemy* ene = dynamic_cast<Enemy*>(item);
-            if(ene)
-            {
-                qreal distance = QLineF(ene->getPlayerPos(),ene->pos()).length();
-                if(distance < mindis)
-                {
-                    mindis = distance;
-                    target = ene;
-                }
-            }
+            mindis = dis;
+            target = e;
         }
     }
+    if(target == nullptr)
+        qDebug() << "null";
     switch(t)
     {
     case angel:
@@ -107,12 +110,56 @@ void Bullet::bullmove()
 {
     if(target)
     {
-        QLineF line(this->pos(), target->pos());
-        qreal angle = line.angle();
-        qreal dx = qCos(angle / 180 * PI);
-        qreal dy = qSin(angle / 180 * PI);
-        m_x = dx * m_speed;
-        m_y = dy * m_speed;
+        qreal dx = target->m_x - m_x;
+        qreal dy = target->m_y - m_y;
+        if(dx >= 0 && dy >= 0)
+        {
+            if(dx >= 20 && dy >= 20)
+            {
+                m_x += m_speed;
+                m_y += m_speed;
+            }
+            else if(dx <= 20 && dy >= 20)
+                m_y += m_speed;
+            else
+                m_x += m_speed;
+        }
+        else if(dx <= 0 && dy >= 0)
+        {
+            if(dx <= -20 && dy >= 20)
+            {
+                m_x -= m_speed;
+                m_y += m_speed;
+            }
+            else if(dx >= -20 && dy <= 20)
+                m_y -= m_speed;
+            else
+                m_x += m_speed;
+        }
+        else if(dx >= 0 && dy <= 0)
+        {
+            if(dx >= 20 && dy <= -20)
+            {
+                m_x += m_speed;
+                m_y -= m_speed;
+            }
+            else if(dx <= 20 && dy >= -20)
+                m_y += m_speed;
+            else
+                m_x -= m_speed;
+        }
+        else
+        {
+            if(dx <= -20 && dy <= -20)
+            {
+                m_x -= m_speed;
+                m_y -= m_speed;
+            }
+            else if(dx >= -20 && dy >= -20)
+                m_y -= m_speed;
+            else
+                m_x -= m_speed;
+        }
         setPos(m_x, m_y);
     }
 }

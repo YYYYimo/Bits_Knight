@@ -1,0 +1,21 @@
+#ifndef SUJECTBULLET_H
+#define SUJECTBULLET_H
+
+#include "bullet.h"
+#include "player.h"
+#include "enemy.h"
+#include <QVector>
+
+class subject
+{
+public:
+    subject();
+    ~subject();
+    Player* play;
+    QVector<Enemy*> enevec;
+    addplayerPointer(Player* p);
+    addenemyPointer(Enemy* e);
+    removeenemyPointer(Enemy* e);
+};
+
+#endif // SUJECTBULLET_H

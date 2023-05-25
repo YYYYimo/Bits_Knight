@@ -12,7 +12,6 @@
 #include "player.h"
 #include "enemy.h"
 #include "dropitem.h"
-
 enum Enemytype {_demon = 0,  _zombie = 1};
 class Player;
 class Enemy;

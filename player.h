@@ -12,10 +12,7 @@ class Player : public QGraphicsObject
     friend class Bullet;
 public:
     Player();
-
     QRectF boundingRect() const override;
-    bool collidesWithItem(QGraphicsItem *other, Qt::ItemSelectionMode mode);
-
     void setMovie(const QString& path);
     void setSpeed(qreal speed);
     void setPos(qreal x, qreal y);

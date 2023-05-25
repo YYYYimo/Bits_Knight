@@ -3,12 +3,12 @@
 
 #include <QGraphicsItem>
 #include <QString>
-#include "player.h"
-#include "enemy.h"
 #include "gamewindow.h"
+#include "enemy.h"
+#include "player.h"
+#include "suject.h"
 enum bullettype {angel, elf};
-class Enemy;
-class Bullet : public QGraphicsItem
+class Bullet : public QGraphicsItem, public subject
 {
 public:
     Bullet(int t, qreal x, qreal y);

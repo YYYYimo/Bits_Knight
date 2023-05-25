@@ -57,6 +57,7 @@ void GameWindow::addplayer(int type)
         play = new playerAngle();
         scene->addItem(play);
         play->setPos(750, 600);
+        
     }
 
         break;

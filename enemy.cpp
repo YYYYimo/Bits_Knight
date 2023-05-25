@@ -5,6 +5,7 @@
 #include <QMovie>
 #include <QtMath>
 #include <QDebug>
+#include <QList>
 #define PI 3.1415926
 Enemy::Enemy()
  : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr)
@@ -38,10 +39,11 @@ void Enemy::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     update();
 }
 
-bool Enemy::collidesWithItem(QGraphicsItem* other, Qt::ItemSelectionMode mode) const
+QPainterPath Enemy::shape() const
 {
-    Q_UNUSED(mode)
-    return other->type() == Player::Type;
+    QPainterPath path;
+    path.addEllipse(boundingRect());
+    return path;
 }
 
 
@@ -95,21 +97,55 @@ void Enemy::enemove()
 {
     if (play)
     {
-        qreal deltax = (play->m_x - m_x) * (play->m_x - m_x);
-        qreal deltay = (play->m_y - m_y) * (play->m_y - m_y);
-        if(deltax  <= deltay)
+        qreal dx = play->m_x - m_x;
+        qreal dy = play->m_y - m_y;
+        if(dx >= 0 && dy >= 0)
         {
-            if(play->m_x <= m_x)
-                m_x -= m_speed;
+            if(dx >= 20 && dy >= 20)
+            {
+                m_x += m_speed;
+                m_y += m_speed;
+            }
+            else if(dx <= 20 && dy >= 20)
+                m_y += m_speed;
             else
                 m_x += m_speed;
         }
+        else if(dx <= 0 && dy >= 0)
+        {
+            if(dx <= -20 && dy >= 20)
+            {
+                m_x -= m_speed;
+                m_y += m_speed;
+            }
+            else if(dx >= -20 && dy <= 20)
+                m_y -= m_speed;
+            else
+                m_x += m_speed;
+        }
+        else if(dx >= 0 && dy <= 0)
+        {
+            if(dx >= 20 && dy <= -20)
+            {
+                m_x += m_speed;
+                m_y -= m_speed;
+            }
+            else if(dx <= 20 && dy >= -20)
+                m_y += m_speed;
+            else
+                m_x -= m_speed;
+        }
         else
         {
-            if(play->m_y <= m_y)
-                 m_y -= m_speed;
+            if(dx <= -20 && dy <= -20)
+            {
+                m_x -= m_speed;
+                m_y -= m_speed;
+            }
+            else if(dx >= -20 && dy >= -20)
+                m_y -= m_speed;
             else
-                m_y += m_speed;
+                m_x -= m_speed;
         }
         setPos(m_x, m_y);
     }
@@ -164,11 +200,9 @@ void Enemy::takeDamage(int dam)
 
 void Enemy::attack()
 {
-    QList<QGraphicsItem *> items = collidingItems();
-     //to do:用碰撞检测来控制敌人对玩家发起进攻，对于攻击范围不同的敌人重写shape（）函数
-    if(!collidingItems().isEmpty())
+    QList<QGraphicsItem*> collisions = collidingItems();
+    if(collidesWithItem(play, Qt::IntersectsItemBoundingRect))
     {
-        qDebug() << play->m_hp;
         play->takeDamage(m_attack);
     }
 }
