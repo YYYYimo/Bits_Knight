@@ -120,6 +120,23 @@ void Player::slotTimeOut()
         // 更新角色的位置
         m_x += dx;
         m_y += dy;
+        if((m_x - 540) * (m_x - 540) + (m_y - 330) * (m_y - 330) <= 56* 56)
+        {
+            setPos(m_x - dx, m_y - dy);
+        }
+        else if((m_x - 890) * (m_x - 890) + (m_y - 687) * (m_y - 687) <= 56* 56)
+        {
+            setPos(m_x - dx, m_y - dy);
+        }
+        else if((m_x - 90) * (m_x - 90) + (m_y - 730) * (m_y - 730) <= 56* 56)
+        {
+            setPos(m_x - dx, m_y - dy);
+        }
+        else if((m_x - 890) * (m_x - 890) + (m_y - 884) * (m_y - 884) <= 56* 56)
+        {
+            setPos(m_x - dx, m_y - dy);
+        }
+        else
         setPos(m_x, m_y);
     }
 }
@@ -127,6 +144,7 @@ void Player::slotTimeOut()
 void Player::updatePlayer()
 {
     lifespan++;
+    coins++;
     attack();
 }
 

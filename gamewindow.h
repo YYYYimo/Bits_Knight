@@ -27,7 +27,6 @@ public:
     void addenemy(int type);
     void setgameTimerLabel();
     void checkPlayerstate();
-    void showHp();
     //void nextlevel(); to do
     int enemynum;
     int curtime;
@@ -45,6 +44,8 @@ private:
     QTimer* timer; //用于刷新游戏界面
     QTimer* gameTimer; //用于记录游戏开始时间
     QLabel* timerLabel; //用于显示计时器时间
+    QLabel* coinLable;
+    QLabel* showhp;
 };
 
 #endif // GAMEWINDOW_H

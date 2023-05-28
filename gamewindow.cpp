@@ -47,6 +47,32 @@ void GameWindow::setgameTimerLabel()
     timerLabel->setFont(font);
     timerLabel->setGeometry(10, 10, 80, 30);
     timerLabel->setText("00:00");
+
+    QMovie* movie = new QMovie("://resource/gif/coin.gif");
+    movie->setScaledSize(QSize(20, 20));
+    movie->start();
+    QLabel* label = new QLabel(this);
+    label->setMovie(movie);
+    label->setGeometry(120, 1, 50, 50); // 设置位置和大小
+    label->show();
+
+    QLabel* heart = new QLabel(this);
+    QPixmap pixmap("://resource/img/ui_heart_full.png");
+    QPixmap scaledPixmap = pixmap.scaled(30, 30, Qt::KeepAspectRatio);
+    heart->setPixmap(scaledPixmap);
+    heart->setGeometry(200, 3, 50, 50);
+
+    showhp = new QLabel(this);
+    showhp->setFont(font);
+    showhp->setGeometry(230, 10, 80, 30);
+    QString hp = QString("%1").arg(play->m_hp);
+    showhp->setText(hp);
+
+
+    coinLable = new QLabel(this);
+    coinLable->setFont(font);
+    coinLable->setGeometry(155, 10, 80, 30);
+    coinLable->setText("0");
 }
 
 void GameWindow::addplayer(int type)
@@ -90,13 +116,13 @@ void GameWindow::addenemy(int type)
         x = 1150;
         y = 10;
     case 4:
-        x = 1450;
+        x = 1150;
         y = 50;
     case 5:
-        x = 1450;
+        x = 1150;
         y = 420;
     case 6:
-        x = 1450;
+        x = 1150;
         y = 800;
     default:
         break;
@@ -150,6 +176,14 @@ void GameWindow::updateTimerLabel()
 
     // 更新计时器标签的文本
     timerLabel->setText(timeStr);
+    //更新血量标签
+    QString hp = QString("%1").arg(play->m_hp);
+    showhp->setText(hp);
+
+    //更新金币标签
+    QString coin = QString("%1").arg(play->coins);
+    coinLable->setText(coin);
+
 }
 
 void GameWindow::checkPlayerstate()
@@ -168,14 +202,5 @@ void GameWindow::checkPlayerstate()
     }
 }
 
-void GameWindow::showHp() //to do
-{
-    switch (play->m_hp) {
-    case 0:
 
-        break;
-    default:
-        break;
-    }
-}
 

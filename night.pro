@@ -35,7 +35,8 @@ SOURCES += \
     bullet.cpp \
     playerelf.cpp \
     enemydemon.cpp \
-    subject.cpp
+    subject.cpp \
+    choosehero.cpp
 
 HEADERS += \
         widget.h \
@@ -49,7 +50,8 @@ HEADERS += \
     bullet.h \
     playerelf.h \
     enemydemon.h \
-    subject.h
+    subject.h \
+    choosehero.h
 
 FORMS += \
         widget.ui
