@@ -1,6 +1,6 @@
 #include "enemydemon.h"
 #include <QDebug>
-enemydemon::enemydemon(Player* pl)
+enemydemon::enemydemon(QSharedPointer<Player> pl)
 {
     m_type = 0;
     m_hp = 10;

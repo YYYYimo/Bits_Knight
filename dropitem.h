@@ -3,20 +3,23 @@
 #include <QGraphicsItem>
 #include <QString>
 #include <QMovie>
+#include <QSharedPointer>
+#include "subject.h"
 enum dropItem_type {red = 0, yellow = 1, blue = 2, green = 3, coin = 4};
-class DropItem: public QGraphicsItem
+class DropItem: public QGraphicsItem, public subject
 {
 public:
-    DropItem(int t, qreal x, qreal y);
+    DropItem(int t, qreal x, qreal y, QSharedPointer<Player> p);
+    DropItem(DropItem*) {}
     ~DropItem() {}
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
     QRectF boundingRect() const override;
-    bool collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode mode) const;
-    void rmdropItem(DropItem* item);
-
+    void rmdropItem(QSharedPointer<DropItem> item);
+    void pickup();
     int type;
-    QMovie *coin_movie;
+    QMovie* coin_movie;
     QString imgpath;
+    QSharedPointer<Player> play;
 
 private:
     qreal m_x;

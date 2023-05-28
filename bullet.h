@@ -3,22 +3,27 @@
 
 #include <QGraphicsItem>
 #include <QString>
+#include <QTimer>
+#include <QObject>
+#include <QSharedPointer>
 #include "gamewindow.h"
 #include "enemy.h"
 #include "player.h"
-#include "suject.h"
+#include "subject.h"
 enum bullettype {angel, elf};
-class Bullet : public QGraphicsItem, public subject
+class Bullet : public QGraphicsItem, public subject, public QObject
 {
 public:
     Bullet(int t, qreal x, qreal y);
+    Bullet(Bullet*){} //
     ~Bullet(){}
     
     QRectF boundingRect() const override;
-    bool collidesWithItem(QGraphicsItem *other, Qt::ItemSelectionMode mode) const;
     void setPos(qreal x, qreal y);
     void advance();
+    void attack();
     void bullmove();
+    void rmbullet();
 
 private:
     int m_type;
@@ -29,10 +34,13 @@ private:
     QString imgpath;
     qreal m_x;
     qreal m_y;
-    Enemy* target;
+    QSharedPointer<Enemy> target;
+    QTimer* updatetime;
 
 protected:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+private slots:
+    void slotTimeOut();
 };
 
 #endif // BULLET_H

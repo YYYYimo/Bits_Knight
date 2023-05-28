@@ -3,8 +3,9 @@
 #include <QGraphicsPixmapItem>
 #include <QImage>
 #include <QPainter>
+#include <QDebug>
 
-DropItem::DropItem(int t, qreal x, qreal y):type(t),m_x(x),m_y(y)
+DropItem::DropItem(int t, qreal x, qreal y, QSharedPointer<Player> p):type(t),m_x(x),m_y(y),play(p)
 {
     width = 30;
     height = 30;
@@ -28,7 +29,6 @@ DropItem::DropItem(int t, qreal x, qreal y):type(t),m_x(x),m_y(y)
         default:
             break;
         }
-
         QGraphicsPixmapItem* pixmapItem = new QGraphicsPixmapItem();
         QPixmap pixmap(imgpath);
         pixmapItem->setPixmap(pixmap);
@@ -40,6 +40,7 @@ DropItem::DropItem(int t, qreal x, qreal y):type(t),m_x(x),m_y(y)
 
 void DropItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    pickup();////
     Q_UNUSED(option)
     Q_UNUSED(widget)
     QImage image = coin_movie->currentImage();
@@ -52,15 +53,24 @@ QRectF DropItem::boundingRect() const
     return QRectF(m_x, m_y, width, height);
 }
 
-bool DropItem::collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode mode) const
-{
-    return QGraphicsItem::collidesWithItem(other, mode);
+
+void DropItem::pickup()
+{            qDebug() << "play-p: " << play_p.data();
+    if(collidesWithItem(play.data(), Qt::IntersectsItemBoundingRect))
+    {
+        qDebug() << "pickup";
+        if(type == 0)
+            play_p->coins += 1;
+        QSharedPointer<DropItem> drop = QSharedPointer<DropItem>::create(this);
+        removedropPointer(drop);
+        scene()->removeItem(drop.data());
+    }
 }
 
-void DropItem::rmdropItem(DropItem* item)
+void DropItem::rmdropItem(QSharedPointer<DropItem> item)
 {
-    scene()->removeItem(item);
-    delete this;
+    removedropPointer(item);
+    scene()->removeItem(item.data());
 }
 
 

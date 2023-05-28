@@ -9,13 +9,15 @@
 #include <QDateTime>
 #include <QString>
 #include <QVector>
+#include <QSharedDataPointer>
 #include "player.h"
 #include "enemy.h"
 #include "dropitem.h"
+#include "subject.h"
 enum Enemytype {_demon = 0,  _zombie = 1};
 class Player;
 class Enemy;
-class GameWindow : public QWidget
+class GameWindow : public QWidget, public subject
 {
     Q_OBJECT
 public:
@@ -30,20 +32,19 @@ public:
     int enemynum;
     int curtime;
     int lastenemytype;
-    Player* play;
-    QVector<Enemy*> enevec;
+    QSharedPointer<Player> play;
     QDateTime startTime;
-    QGraphicsView *view;
-    QGraphicsScene *scene;
+    QGraphicsView* view;
+    QGraphicsScene* scene;
     
 private slots:
     void updateGame(); //用于刷新游戏界面
     void updateTimerLabel(); //用于更新计时器数字显示
     
 private:
-    QTimer *timer; //用于刷新游戏界面
-    QTimer *gameTimer; //用于记录游戏开始时间
-    QLabel *timerLabel; //用于显示计时器时间
+    QTimer* timer; //用于刷新游戏界面
+    QTimer* gameTimer; //用于记录游戏开始时间
+    QLabel* timerLabel; //用于显示计时器时间
 };
 
 #endif // GAMEWINDOW_H

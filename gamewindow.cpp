@@ -54,9 +54,12 @@ void GameWindow::addplayer(int type)
     switch (type) {
     case 0:
     {
-        play = new playerAngle();
-        scene->addItem(play);
+        play = QSharedPointer<playerAngle>(new playerAngle());
+        scene->addItem(play.data());
         play->setPos(750, 600);
+        addplayerPointer(play);
+        qDebug() << "play: " << play.data();
+
         
     }
 
@@ -105,11 +108,10 @@ void GameWindow::addenemy(int type)
         //todo：对于不同的怪物类型有不同的设定
         case 0:
         {
-            qDebug() <<"debug";
-            enemydemon* ene1 = new enemydemon(play);
-            scene->addItem(ene1);
+            QSharedPointer<enemydemon> ene1 = QSharedPointer<enemydemon>(new enemydemon(play));
+            scene->addItem(ene1.data());
             ene1->setPos(x, y);
-            enevec.push_back(ene1);
+            addenemyPointer(ene1);
             enemynum++;
             break;
         }

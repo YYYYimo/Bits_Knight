@@ -49,7 +49,7 @@ HEADERS += \
     bullet.h \
     playerelf.h \
     enemydemon.h \
-    suject.h
+    subject.h
 
 FORMS += \
         widget.ui

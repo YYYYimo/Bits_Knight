@@ -25,6 +25,11 @@ Enemy::Enemy()
 
 }
 
+Enemy::~Enemy()
+{
+
+}
+
 QRectF Enemy::boundingRect() const
 {
     return QRectF(m_x, m_y, width, height);
@@ -153,21 +158,26 @@ void Enemy::enemove()
 
 void Enemy::rmenemy()
 {
-    delete this->m_movie;
-    if(lifespan < 90)
+    lifespantime->stop();
+    QSharedPointer<Enemy> ene = QSharedPointer<Enemy>::create(this);
+    qreal lsp = lifespan;
+    qreal x = m_x, y = m_y;
+    int type = m_type;
+    if(lsp < 120)
     {
-        DropItem* dropcoin = new DropItem(coin, m_x, m_y);
-        scene()->addItem(dropcoin);
+        QSharedPointer<DropItem> dropcoin = QSharedPointer<DropItem>(new DropItem(coin, x, y, play));
+        adddropPointer(dropcoin);
+        scene()->addItem(dropcoin.data());
     }
     else
     {
-        DropItem* dropcoin = new DropItem(coin, m_x, m_y);
-        DropItem* dropitem = new DropItem(m_type, m_x + 5, m_y + 5);
-        scene()->addItem(dropcoin);
-        scene()->addItem(dropitem);
+        QSharedPointer<DropItem> dropcoin = QSharedPointer<DropItem>(new DropItem(coin, x, y, play));
+        QSharedPointer<DropItem> dropitem = QSharedPointer<DropItem>(new DropItem(type, x + 5, y + 5, play));
+        scene()->addItem(dropcoin.data());
+        scene()->addItem(dropitem.data());
     }
-
-    delete this;
+    removeenemyPointer(ene);
+    scene()->removeItem(this);
 }
 
 void Enemy::uplevel()
@@ -200,8 +210,8 @@ void Enemy::takeDamage(int dam)
 
 void Enemy::attack()
 {
-    QList<QGraphicsItem*> collisions = collidingItems();
-    if(collidesWithItem(play, Qt::IntersectsItemBoundingRect))
+    //QList<QGraphicsItem*> collisions = collidingItems();
+    if(collidesWithItem(play.data(), Qt::IntersectsItemBoundingRect))
     {
         play->takeDamage(m_attack);
     }

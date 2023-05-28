@@ -2,10 +2,11 @@
 #define PLAYER_H
 #include <QObject>
 #include <QGraphicsItem>
+#include <QSharedPointer>
 #include "gamewindow.h"
 #include "bullet.h"
-
-class Player : public QGraphicsObject
+#include "subject.h"
+class Player : public QGraphicsObject, public subject
 {
     Q_OBJECT
     friend class GameWindow;
@@ -23,11 +24,13 @@ public:
     void checkPlayerState();
     void takeDamage(int dam);
     void attack();
+    void pickupItem();
 
 
     qreal m_x;
     qreal m_y;
-        int m_hp;
+    int m_hp;
+    int coins;
 protected:
     QList<int> keys;
     int m_type;
@@ -36,7 +39,7 @@ protected:
     int width;
     int height;
     int lifespan;
-    int coins;
+
 
     qreal m_speed;
     QTimer* keyRespondTimer;

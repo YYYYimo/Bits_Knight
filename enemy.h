@@ -6,16 +6,18 @@
 #include <QTimer>
 #include <QObject>
 #include <QPainterPath>
+#include <QSharedPointer>
 #include "player.h"
 #include "gamewindow.h"
-
+#include "subject.h"
 class Player;
-class Enemy : public QGraphicsItem, public QObject
+class Enemy : public QGraphicsItem, public QObject, public subject
 {
     friend class Player;
 public:
     Enemy();
-
+    Enemy(Enemy*) {}//
+    ~Enemy();
     QRectF boundingRect() const override;
     QPainterPath shape() const;
     QPointF getPlayerPos(); //定位玩家位置
@@ -44,7 +46,7 @@ protected:
     int height;
     int lifespan;
     qreal m_speed;
-    Player* play;
+    QSharedPointer<Player> play;
     QMovie* m_movie;
     QTimer* lifespantime;//生存时间
     QTimer* updatetime;//刷新时间

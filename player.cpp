@@ -95,7 +95,7 @@ void Player::keyReleaseEvent(QKeyEvent *event)
 
 void Player::slotTimeOut()
 {
-
+        //pickupItem();
     qreal dx = 0;
     qreal dy = 0;
     foreach (int key, keys) {
@@ -137,14 +137,32 @@ void Player::takeDamage(int dam)
 
 void Player::attack()
 {
-    if(lifespan != 0 && lifespan % 3 == 0)//设置发射子弹时间间隔
+    if(lifespan != 0 && lifespan % 1 == 0)//设置发射子弹时间间隔
     {
-        qDebug() << "quua";
-        Bullet* bull = new Bullet(m_type, m_x, m_y);
-        scene()->addItem(bull);
+        QSharedPointer<Bullet> bull = QSharedPointer<Bullet>(new Bullet(m_type, m_x, m_y));
+        scene()->addItem(bull.data());
+        addbullPointer(bull);
     }
 }
 
+void Player::pickupItem()
+{
+    QList<QGraphicsItem*> collisions = collidingItems();
+    if(!collisions.isEmpty())
+    {
+        DropItem *drop = qgraphicsitem_cast<DropItem*>(collisions[qrand() % collisions.size()]);
+        if(drop)
+        {
+            if(drop->type == 0)
+            {
+                coins += 1;
+            }
+            //else
+            QSharedPointer<DropItem> dropitem = QSharedPointer<DropItem>(drop);
+            drop->rmdropItem(dropitem);
+        }
+    }
+}
 
 
 

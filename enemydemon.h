@@ -7,7 +7,7 @@
 class enemydemon : public Enemy
 {
 public:
-    enemydemon(Player* pl);
+    enemydemon(QSharedPointer<Player> pl);
     ~enemydemon(){}
 };
 
