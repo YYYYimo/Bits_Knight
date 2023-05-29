@@ -21,7 +21,7 @@ class GameWindow : public QWidget, public subject
 {
     Q_OBJECT
 public:
-    explicit GameWindow(QWidget *parent = nullptr);
+    GameWindow(QWidget *parent = nullptr, int player_type = 0);
     ~GameWindow();
     void addplayer(int type);
     void addenemy(int type);
@@ -32,6 +32,7 @@ public:
     int curtime;
     int lastenemytype;
     QSharedPointer<Player> play;
+    int playerType;
     QDateTime startTime;
     QGraphicsView* view;
     QGraphicsScene* scene;

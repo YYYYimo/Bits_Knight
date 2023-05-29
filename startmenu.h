@@ -2,6 +2,7 @@
 #define STARTMENU_H
 
 #include <QWidget>
+#include "choosehero.h"
 #include "gamewindow.h"
 class StartMenu: public QWidget
 {
@@ -10,9 +11,10 @@ public:
     explicit StartMenu(QWidget *parent = nullptr);
     ~StartMenu();
 private slots:
-    void startGame();
+    void chooseWindow();
 private:
     GameWindow* gamewindow;
+    choosehero* choose;
 };
 
 

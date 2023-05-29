@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>resource/img/map/Map002.png</file>
-        <file>resource/gif/angle.gif</file>
-        <file>resource/gif/elf_female.gif</file>
         <file>resource/img/flask_big_red.png</file>
         <file>resource/img/flask_big_blue.png</file>
         <file>resource/img/flask_big_yellow.png</file>
@@ -19,5 +17,12 @@
         <file>resource/img/ui_heart_half.png</file>
         <file>resource/img/startpage.jpg</file>
         <file>resource/img/map/Map001.png</file>
+        <file>resource/img/choosehero.png</file>
+        <file>resource/gif/angle_run.gif</file>
+        <file>resource/gif/angle_stand.gif</file>
+        <file>resource/gif/elf_female_run.gif</file>
+        <file>resource/gif/wizzard_run.gif</file>
+        <file>resource/gif/wizzard_stand.gif</file>
+        <file>resource/gif/elf_stand.gif</file>
     </qresource>
 </RCC>

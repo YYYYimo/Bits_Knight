@@ -3,13 +3,16 @@
 #include <QWidget>
 #include <QLabel>
 #include <QPixmap>
+#include "gamewindow.h"
 class choosehero: public QWidget
 {
+    Q_OBJECT
 public:
-    choosehero();
-    ~choosehero();
-private slots:
-    void startGame();
+    choosehero(QWidget *parent);
+    ~choosehero(){}
+    void startGame(int hero_type);
+private:
+    GameWindow* gamewindow;
 };
 
 #endif // CHOOSEHERO_H

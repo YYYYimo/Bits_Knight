@@ -19,35 +19,35 @@ StartMenu::StartMenu(QWidget *parent):QWidget(parent)
     startbutton->setStyleSheet("QPushButton { border: 2px solid black; border-radius: 50px; background-color: #FFFACD; }");
     QFont font("Arial", 16, QFont::Bold);
     startbutton->setFont(font);
-    connect(startbutton, SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(startbutton, SIGNAL(clicked()), this, SLOT(chooseWindow()));
 
     QPushButton *shopbutton = new QPushButton("shop",this);
     shopbutton->setGeometry(500, 710, 200, 100);
     shopbutton->setStyleSheet("QPushButton { border: 2px solid black; border-radius: 50px; background-color: #FFFACD; }");
     shopbutton->setFont(font);
-    connect(shopbutton, SIGNAL(clicked()), this, SLOT(startGame()));
+    //connect(shopbutton, SIGNAL(clicked()), this, SLOT(startGame()));
 
     QPushButton *archibutton = new QPushButton("archives",this);
     archibutton->setGeometry(500, 820, 200, 100);
     archibutton->setStyleSheet("QPushButton { border: 2px solid black; border-radius: 50px; background-color: #FFFACD; }");
     archibutton->setFont(font);
-    connect(archibutton, SIGNAL(clicked()), this, SLOT(startGame()));
+    //connect(archibutton, SIGNAL(clicked()), this, SLOT(startGame()));
 
     QPushButton *readbutton = new QPushButton("read",this);
     readbutton->setGeometry(500, 930, 200, 100);
     readbutton->setStyleSheet("QPushButton { border: 2px solid black; border-radius: 50px; background-color: #FFFACD; }");
     readbutton->setFont(font);
-    connect(readbutton, SIGNAL(clicked()), this, SLOT(startGame()));
+    //connect(readbutton, SIGNAL(clicked()), this, SLOT(startGame()));
 
 }
 
-void StartMenu::startGame()
+void StartMenu::chooseWindow()
 {
-    QWidget* gamew = new QWidget();
-    gamew->resize(1200, 1200);
-    setParent(gamew);
-    gamewindow = new GameWindow(gamew);
-    gamew->show();
+    QWidget* choosew = new QWidget();
+    choosew->resize(1200, 1200);
+    setParent(choosew);
+    choose = new choosehero(choosew);
+    choosew->show();
     this->close();
 }
 

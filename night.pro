@@ -36,7 +36,9 @@ SOURCES += \
     playerelf.cpp \
     enemydemon.cpp \
     subject.cpp \
-    choosehero.cpp
+    choosehero.cpp \
+    playerwizzard.cpp \
+    shop.cpp
 
 HEADERS += \
         widget.h \
@@ -51,7 +53,9 @@ HEADERS += \
     playerelf.h \
     enemydemon.h \
     subject.h \
-    choosehero.h
+    choosehero.h \
+    playerwizzard.h \
+    shop.h
 
 FORMS += \
         widget.ui

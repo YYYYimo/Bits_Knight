@@ -6,12 +6,12 @@ playerelf::playerelf()
     m_hp = 10;
     m_attack = 2;
     width = 70;
-    height = 70;
+    height = 110;
     m_x = 0;
     m_y = 0;
-    m_speed = 5;
+    m_speed = 2;
 
-    QString imgpath = "://resource/gif/elf_female.gif";
+    QString imgpath = "://resource/gif/elf_female_run.gif";
     m_movie = new QMovie(imgpath);
     m_movie->start();
 }

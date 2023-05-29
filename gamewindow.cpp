@@ -1,11 +1,13 @@
 #include "gamewindow.h"
 #include "playerangle.h"
+#include "playerelf.h"
+#include "playerwizzard.h"
 #include "enemydemon.h"
 #include "player.h"
 #include <QDebug>
 
-GameWindow::GameWindow(QWidget *parent):
-        QWidget(parent), curtime(0)
+GameWindow::GameWindow(QWidget *parent, int player_type):
+        QWidget(parent), curtime(0),playerType(player_type)
 {
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,1500,1200);
@@ -18,7 +20,7 @@ GameWindow::GameWindow(QWidget *parent):
     view->setCacheMode(QGraphicsView::CacheBackground);
     view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
-    addplayer(0);//根据角色选择界面选择加载的角色 todo
+    addplayer(player_type);//根据角色选择界面选择加载的角色 todo
     lastenemytype = 0;
     enemynum = 0;
 
@@ -84,12 +86,24 @@ void GameWindow::addplayer(int type)
         scene->addItem(play.data());
         play->setPos(750, 600);
         addplayerPointer(play);
-        qDebug() << "play: " << play.data();
-
-        
-    }
-
         break;
+    }
+    case 1:
+    {
+        play = QSharedPointer<playerelf>(new playerelf());
+        scene->addItem(play.data());
+        play->setPos(750, 600);
+        addplayerPointer(play);
+        break;
+    }
+    case 2:
+    {
+        play = QSharedPointer<playerwizzard>(new playerwizzard());
+        scene->addItem(play.data());
+        play->setPos(750, 600);
+        addplayerPointer(play);
+        break;
+    }
     default:
         break;
     }
