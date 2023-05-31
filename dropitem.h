@@ -4,9 +4,10 @@
 #include <QString>
 #include <QMovie>
 #include <QSharedPointer>
+#include <QEnableSharedFromThis>
 #include "subject.h"
 enum dropItem_type {red = 0, yellow = 1, blue = 2, green = 3, coin = 4};
-class DropItem: public QGraphicsItem, public subject
+class DropItem: public QGraphicsItem, public subject, public QEnableSharedFromThis<DropItem>
 {
 public:
     DropItem(int t, qreal x, qreal y, QSharedPointer<Player> p);

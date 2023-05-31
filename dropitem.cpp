@@ -55,13 +55,12 @@ QRectF DropItem::boundingRect() const
 
 
 void DropItem::pickup()
-{            qDebug() << "play-p: " << play_p.data();
+{
     if(collidesWithItem(play.data(), Qt::IntersectsItemBoundingRect))
     {
-        qDebug() << "pickup";
         if(type == 0)
             play_p->coins += 1;
-        QSharedPointer<DropItem> drop = QSharedPointer<DropItem>::create(this);
+        QSharedPointer<DropItem> drop = sharedFromThis();
         removedropPointer(drop);
         scene()->removeItem(drop.data());
     }
