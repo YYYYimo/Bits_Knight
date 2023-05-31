@@ -30,7 +30,7 @@ public:
     qreal m_x;
     qreal m_y;
     int m_hp;
-    int coins;
+    int exp;
 protected:
     QList<int> keys;
     int m_type;

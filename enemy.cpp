@@ -10,10 +10,6 @@
 Enemy::Enemy()
  : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr)
 {
-    QString imgpath = "://resource/gif/small_demon_run.gif";
-    m_movie = new QMovie(imgpath);
-    m_movie->start();
-
     lifespan = 0;
     lifespantime = new QTimer(this);
     connect(lifespantime, &QTimer::timeout, this, &Enemy::updateEnemy);
@@ -28,6 +24,11 @@ Enemy::Enemy()
 Enemy::~Enemy()
 {
 
+}
+
+void Enemy::setType(int t)
+{
+    m_type = t;
 }
 
 QRectF Enemy::boundingRect() const
@@ -92,73 +93,22 @@ void Enemy::setAttack(int attack)
     m_attack = attack;
 }
 
+void Enemy::setdirect(int d)
+{
+    direct = d;
+}
+
 QPointF Enemy::getPlayerPos()
 {
     QPointF point(play->m_x, play->m_y);
     return point;
 }
 
-void Enemy::enemove()
-{
-    if (play)
-    {
-        qreal dx = play->m_x - m_x;
-        qreal dy = play->m_y - m_y;
-        if(dx >= 0 && dy >= 0)
-        {
-            if(dx >= 20 && dy >= 20)
-            {
-                m_x += m_speed;
-                m_y += m_speed;
-            }
-            else if(dx <= 20 && dy >= 20)
-                m_y += m_speed;
-            else
-                m_x += m_speed;
-        }
-        else if(dx <= 0 && dy >= 0)
-        {
-            if(dx <= -20 && dy >= 20)
-            {
-                m_x -= m_speed;
-                m_y += m_speed;
-            }
-            else if(dx >= -20 && dy <= 20)
-                m_y -= m_speed;
-            else
-                m_x += m_speed;
-        }
-        else if(dx >= 0 && dy <= 0)
-        {
-            if(dx >= 20 && dy <= -20)
-            {
-                m_x += m_speed;
-                m_y -= m_speed;
-            }
-            else if(dx <= 20 && dy >= -20)
-                m_y += m_speed;
-            else
-                m_x -= m_speed;
-        }
-        else
-        {
-            if(dx <= -20 && dy <= -20)
-            {
-                m_x -= m_speed;
-                m_y -= m_speed;
-            }
-            else if(dx >= -20 && dy >= -20)
-                m_y -= m_speed;
-            else
-                m_x -= m_speed;
-        }
-        setPos(m_x, m_y);
-    }
-}
 
 void Enemy::rmenemy()
 {
     lifespantime->stop();
+    GameWindow::enemynum --;
     QSharedPointer<Enemy> ene = QSharedPointer<Enemy>::create(this);
     qreal lsp = lifespan;
     qreal x = m_x, y = m_y;
@@ -217,11 +167,104 @@ void Enemy::attack()
     }
 }
 
+void Enemy::enemove()
+{
+    if (play)
+    {
+        if(m_type == demon)
+        {
+            qreal dx = play->m_x - m_x;
+            qreal dy = play->m_y - m_y;
+            if(dx >= 0 && dy >= 0)
+            {
+                if(dx >= 20 && dy >= 20)
+                {
+                    m_x += m_speed;
+                    m_y += m_speed;
+                }
+                else if(dx <= 20 && dy >= 20)
+                    m_y += m_speed;
+                else
+                    m_x += m_speed;
+            }
+            else if(dx <= 0 && dy >= 0)
+            {
+                if(dx <= -20 && dy >= 20)
+                {
+                    m_x -= m_speed;
+                    m_y += m_speed;
+                }
+                else if(dx >= -20 && dy <= 20)
+                    m_y -= m_speed;
+                else
+                    m_x += m_speed;
+            }
+            else if(dx >= 0 && dy <= 0)
+            {
+                if(dx >= 20 && dy <= -20)
+                {
+                    m_x += m_speed;
+                    m_y -= m_speed;
+                }
+                else if(dx <= 20 && dy >= -20)
+                    m_y += m_speed;
+                else
+                    m_x -= m_speed;
+            }
+            else
+            {
+                if(dx <= -20 && dy <= -20)
+                {
+                    m_x -= m_speed;
+                    m_y -= m_speed;
+                }
+                else if(dx >= -20 && dy >= -20)
+                    m_y -= m_speed;
+                else
+                    m_x -= m_speed;
+            }
+        }
+        else
+        {
+            qreal dx = 0;
+            qreal dy = 0;
+            if(direct == Right)
+            {
+                dx = m_speed;
+                if(m_x + dx >= 1150)
+                    direct = Left;
+            }
+            else if(direct == Down)
+            {
+                dy = m_speed;
+                if(m_y + dy >= 1150)
+                    direct = Up;
+            }
+            else if(direct == Left)
+            {
+                dx = -m_speed;
+                if(m_x + dx <= 50)
+                    direct = Right;
+            }
+            else
+            {
+                dy = -m_speed;
+                if(m_y + dy <= 50)
+                    direct = Down;
+            }
+            setPos(m_x + dx, m_y + dy);
+        }
+    }
+
+}
+
 void Enemy::slotTimeOut()
 {
     if(this)
         enemove();
 }
+
+
 
 
 

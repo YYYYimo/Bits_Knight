@@ -10,6 +10,8 @@
 #include "player.h"
 #include "gamewindow.h"
 #include "subject.h"
+enum Enemytype {demon = -1, zombie = 1};
+enum direct {Right = 0, Down = 1, Left = 2, Up = 3};
 class Player;
 class Enemy : public QGraphicsItem, public QObject, public subject
 {
@@ -21,7 +23,7 @@ public:
     QRectF boundingRect() const override;
     QPainterPath shape() const;
     QPointF getPlayerPos(); //定位玩家位置
-    void enemove(); //敌人移动逻辑
+    void enemove();//敌人移动逻辑
     void rmenemy();
     void uplevel();  // todo: 怪物生成一段时间后自动升级为大怪物
     void takeDamage(int dam);
@@ -31,10 +33,11 @@ public:
     void setSpeed(qreal speed);
     void setPos(qreal x, qreal y);
     void setHP(int hp);
+    void setType(int t);
     void setAttack(int attack);
     void checkEnemystate();
     void advance();
-
+    void setdirect(int d);
     qreal m_x;
     qreal m_y;
 
@@ -45,6 +48,7 @@ protected:
     int width;
     int height;
     int lifespan;
+    int direct;
     qreal m_speed;
     QSharedPointer<Player> play;
     QMovie* m_movie;

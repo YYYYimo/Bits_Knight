@@ -6,6 +6,7 @@ QSharedPointer<Player> subject::play_p = nullptr;
 QVector<QSharedPointer<Enemy>> subject::enevec;
 QVector<QSharedPointer<Bullet>> subject::bullvec;
 QVector<QSharedPointer<DropItem>> subject::dropvec;
+int subject::coins = 0;
 
  subject::subject()
  {

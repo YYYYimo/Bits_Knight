@@ -9,8 +9,7 @@
 Player::Player()
     : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), lifespan(0)
 {   //具体数值在对应玩家角色类中初始化
-
-    coins = 0;
+    exp = 0;
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
 
@@ -144,7 +143,7 @@ void Player::slotTimeOut()
 void Player::updatePlayer()
 {
     lifespan++;
-    coins++;
+    exp++;
     attack();
 }
 
@@ -171,8 +170,8 @@ void Player::pickupItem()
         DropItem *drop = qgraphicsitem_cast<DropItem*>(collisions[qrand() % collisions.size()]);
         if(drop)
         {
-            if(drop->type == 0)
-            {
+            if(drop->type == 4)
+            {                
                 coins += 1;
             }
             //else

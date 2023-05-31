@@ -3,12 +3,14 @@
 #include "playerelf.h"
 #include "playerwizzard.h"
 #include "enemydemon.h"
+#include "enemyzombie.h"
 #include "player.h"
 #include <QDebug>
-
+int GameWindow::enemynum = 0;
 GameWindow::GameWindow(QWidget *parent, int player_type):
-        QWidget(parent), curtime(0),playerType(player_type)
+        QWidget(parent), curtime(0), playerType(player_type)
 {
+
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,1500,1200);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);//设置不适用索引
@@ -22,13 +24,14 @@ GameWindow::GameWindow(QWidget *parent, int player_type):
 
     addplayer(player_type);//根据角色选择界面选择加载的角色 todo
     lastenemytype = 0;
-    enemynum = 0;
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
     timer->start(15);
     startTime = QDateTime::currentDateTime();//记录游戏开始的时间
     setgameTimerLabel();
+
+    lastenemytype = 1;
 
     view->show();
 }
@@ -59,10 +62,16 @@ void GameWindow::setgameTimerLabel()
     label->show();
 
     QLabel* heart = new QLabel(this);
-    QPixmap pixmap("://resource/img/ui_heart_full.png");
-    QPixmap scaledPixmap = pixmap.scaled(30, 30, Qt::KeepAspectRatio);
-    heart->setPixmap(scaledPixmap);
+    QPixmap pixmapheart("://resource/img/ui_heart_full.png");
+    QPixmap scaledPixmapheart = pixmapheart.scaled(30, 30, Qt::KeepAspectRatio);
+    heart->setPixmap(scaledPixmapheart);
     heart->setGeometry(200, 3, 50, 50);
+
+    QLabel* expbox = new QLabel(this);
+    QPixmap pixmapexp("://resource/img/expbox.png");
+    QPixmap scaledPixmapexp = pixmapexp.scaled(30, 30, Qt::KeepAspectRatio);
+    expbox->setPixmap(scaledPixmapexp);
+    expbox->setGeometry(280, 3, 50, 50);
 
     showhp = new QLabel(this);
     showhp->setFont(font);
@@ -75,6 +84,12 @@ void GameWindow::setgameTimerLabel()
     coinLable->setFont(font);
     coinLable->setGeometry(155, 10, 80, 30);
     coinLable->setText("0");
+
+    showexp = new QLabel(this);
+    showexp->setFont(font);
+    showexp->setGeometry(320, 10, 80, 30);
+    QString Exp = QString("%1").arg(play->exp);
+    showexp->setText(Exp);
 }
 
 void GameWindow::addplayer(int type)
@@ -111,52 +126,78 @@ void GameWindow::addplayer(int type)
 
 void GameWindow::addenemy(int type)
 {
-    int index = curtime % 7;
+    lastenemytype = -lastenemytype;
+    int index = curtime % 8;
     qreal x, y;
+    int direction;
     switch (index) { //根据时间得出怪物出现的位置，to do
     case 0:
-        x = 10;
+        x = 400;
         y = 10;
+        direction = 1;
         break;
     case 1:
-        x = 390;
+        x = 800;
         y = 10;
+        direction = 1;
         break;
     case 2:
-        x = 770;
-        y = 10;
+        x = 1150;
+        y = 400;
+        direction = 2;
         break;
     case 3:
         x = 1150;
-        y = 10;
-    case 4:
-        x = 1150;
-        y = 50;
-    case 5:
-        x = 1150;
-        y = 420;
-    case 6:
-        x = 1150;
         y = 800;
+        direction = 2;
+        break;
+    case 4:
+        x = 800;
+        y = 1150;
+        direction = 3;
+        break;
+    case 5:
+        x = 400;
+        y = 1150;
+        direction = 3;
+        break;
+    case 6:
+        x = 10;
+        y = 800;
+        direction = 0;
+        break;
+    case 7:
+        x = 10;
+        y = 400;
+        direction = 0;
+        break;
     default:
         break;
     }
-    if(enemynum <= 7)
+    if(enemynum <= 8)
     {
         switch (type)
-        { //选择加载的怪物类型
-        //todo：对于不同的怪物类型有不同的设定
-        case 0:
+        {
+        case -1:
         {
             QSharedPointer<enemydemon> ene1 = QSharedPointer<enemydemon>(new enemydemon(play));
             scene->addItem(ene1.data());
             ene1->setPos(x, y);
+            ene1->setType(type);
+            ene1->setdirect(direction);
             addenemyPointer(ene1);
             enemynum++;
             break;
         }
         case 1:
         {
+            QSharedPointer<enemyzombie> ene2 = QSharedPointer<enemyzombie>(new enemyzombie(play));
+            scene->addItem(ene2.data());
+            ene2->setPos(x, y);
+            ene2->setType(type);
+            ene2->setdirect(direction);
+            addenemyPointer(ene2);
+            enemynum++;
             break;
         }
         default:
@@ -195,9 +236,12 @@ void GameWindow::updateTimerLabel()
     showhp->setText(hp);
 
     //更新金币标签
-    QString coin = QString("%1").arg(play->coins);
+    QString coin = QString("%1").arg(coins);
     coinLable->setText(coin);
 
+    //更新经验值标签
+    QString Exp = QString("%1").arg(play->exp);
+    showexp->setText(Exp);
 }
 
 void GameWindow::checkPlayerstate()

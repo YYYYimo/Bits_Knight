@@ -14,7 +14,6 @@
 #include "enemy.h"
 #include "dropitem.h"
 #include "subject.h"
-enum Enemytype {_demon = 0,  _zombie = 1};
 class Player;
 class Enemy;
 class GameWindow : public QWidget, public subject
@@ -28,7 +27,7 @@ public:
     void setgameTimerLabel();
     void checkPlayerstate();
     //void nextlevel(); to do
-    int enemynum;
+    static int enemynum;
     int curtime;
     int lastenemytype;
     QSharedPointer<Player> play;
@@ -47,6 +46,7 @@ private:
     QLabel* timerLabel; //用于显示计时器时间
     QLabel* coinLable;
     QLabel* showhp;
+    QLabel* showexp;
 };
 
 #endif // GAMEWINDOW_H

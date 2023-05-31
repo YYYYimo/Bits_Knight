@@ -58,8 +58,10 @@ void DropItem::pickup()
 {
     if(collidesWithItem(play.data(), Qt::IntersectsItemBoundingRect))
     {
-        if(type == 0)
-            play_p->coins += 1;
+        if(type == 4)
+        {
+            coins += 1;
+        }
         QSharedPointer<DropItem> drop = sharedFromThis();
         removedropPointer(drop);
         scene()->removeItem(drop.data());

@@ -19,10 +19,11 @@ public:
     static void removedropPointer(QSharedPointer<DropItem> e);
 
 
-    static QSharedPointer<Player> play_p;
+    static QSharedPointer<Player> play_p;//需要访问
     static QVector<QSharedPointer<Enemy>> enevec;
     static QVector<QSharedPointer<Bullet>> bullvec;
     static QVector<QSharedPointer<DropItem>> dropvec;
+    static int coins;
 };
 
 #endif // SUJECTBULLET_H

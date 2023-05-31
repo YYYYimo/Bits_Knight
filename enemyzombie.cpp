@@ -1,6 +1,5 @@
-#include "enemydemon.h"
-#include <QDebug>
-enemydemon::enemydemon(QSharedPointer<Player> pl)
+#include "enemyzombie.h"
+enemyzombie::enemyzombie(QSharedPointer<Player> pl)
 {
     m_type = 0;
     m_hp = 10;
@@ -12,7 +11,8 @@ enemydemon::enemydemon(QSharedPointer<Player> pl)
     m_speed = 1;
     play = pl;
 
-    QString imgpath = "://resource/gif/small_demon_run.gif";
+
+    QString imgpath = "://resource/gif/small_zombie_run.gif";
     m_movie = new QMovie(imgpath);
     m_movie->start();
 }
