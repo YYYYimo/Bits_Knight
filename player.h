@@ -25,6 +25,8 @@ public:
     void takeDamage(int dam);
     void attack();
     void pickupItem();
+    void pauseAnimation();
+    void resumeAnimation();
 
 
     qreal m_x;

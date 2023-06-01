@@ -181,6 +181,17 @@ void Player::pickupItem()
     }
 }
 
+void Player::pauseAnimation()
+{
+    keyRespondTimer->stop();
+    lifespantime->stop();
+}
+
+void Player::resumeAnimation()
+{
+    keyRespondTimer->start();
+    lifespantime->start();
+}
 
 
 

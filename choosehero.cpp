@@ -56,7 +56,6 @@ choosehero::choosehero(QWidget *parent):QWidget(parent)
 
 void choosehero::startGame(int hero_type)
 {
-    qDebug() << hero_type;
     QWidget* gamew = new QWidget();
     gamew->resize(1200, 1200);
     setParent(gamew);

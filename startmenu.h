@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "choosehero.h"
 #include "gamewindow.h"
+#include "shop.h"
 class StartMenu: public QWidget
 {
     Q_OBJECT
@@ -12,9 +13,11 @@ public:
     ~StartMenu();
 private slots:
     void chooseWindow();
+    void shopWindow();
 private:
     GameWindow* gamewindow;
     choosehero* choose;
+    Shop* shop;
 };
 
 

@@ -18,7 +18,6 @@ Enemy::Enemy()
     updatetime = new QTimer(this);
     connect(updatetime, &QTimer::timeout, this, &Enemy::slotTimeOut);
     updatetime->start(15);
-
 }
 
 Enemy::~Enemy()
@@ -262,6 +261,18 @@ void Enemy::slotTimeOut()
 {
     if(this)
         enemove();
+}
+
+void Enemy::pauseAnimation()
+{
+    lifespantime->stop();
+    updatetime->stop();
+}
+
+void Enemy::resumeAnimation()
+{
+    lifespantime->start();
+    updatetime->start();
 }
 
 

@@ -25,7 +25,7 @@ StartMenu::StartMenu(QWidget *parent):QWidget(parent)
     shopbutton->setGeometry(500, 710, 200, 100);
     shopbutton->setStyleSheet("QPushButton { border: 2px solid black; border-radius: 50px; background-color: #FFFACD; }");
     shopbutton->setFont(font);
-    //connect(shopbutton, SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(shopbutton, SIGNAL(clicked()), this, SLOT(shopWindow()));
 
     QPushButton *archibutton = new QPushButton("archives",this);
     archibutton->setGeometry(500, 820, 200, 100);
@@ -48,6 +48,16 @@ void StartMenu::chooseWindow()
     setParent(choosew);
     choose = new choosehero(choosew);
     choosew->show();
+    this->close();
+}
+
+void StartMenu::shopWindow()
+{
+    QWidget* shopw = new QWidget();
+    shopw->resize(1200, 1200);
+    setParent(shopw);
+    shop = new Shop(shopw);
+    shopw->show();
     this->close();
 }
 

@@ -10,6 +10,8 @@
 #include <QString>
 #include <QVector>
 #include <QSharedDataPointer>
+#include <QPushButton>
+#include <QGraphicsProxyWidget>
 #include "player.h"
 #include "enemy.h"
 #include "dropitem.h"
@@ -26,6 +28,8 @@ public:
     void addenemy(int type);
     void setgameTimerLabel();
     void checkPlayerstate();
+    void pauseGame();
+    void intensify(); //玩家的局内强化
     //void nextlevel(); to do
     static int enemynum;
     int curtime;
@@ -39,6 +43,7 @@ public:
 private slots:
     void updateGame(); //用于刷新游戏界面
     void updateTimerLabel(); //用于更新计时器数字显示
+    void resumeGame();
     
 private:
     QTimer* timer; //用于刷新游戏界面
@@ -47,6 +52,7 @@ private:
     QLabel* coinLable;
     QLabel* showhp;
     QLabel* showexp;
+    QGraphicsProxyWidget* buttonProxy;
 };
 
 #endif // GAMEWINDOW_H

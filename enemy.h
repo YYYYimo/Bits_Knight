@@ -38,6 +38,8 @@ public:
     void checkEnemystate();
     void advance();
     void setdirect(int d);
+    void pauseAnimation();//使动画停止
+    void resumeAnimation();//使动画继续进行下去
     qreal m_x;
     qreal m_y;
 

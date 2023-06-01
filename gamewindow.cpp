@@ -209,6 +209,8 @@ void GameWindow::addenemy(int type)
 
 void GameWindow::updateGame()
 {
+    if(play->exp == 5)
+        pauseGame();
     checkPlayerstate();
     scene->advance();
 }
@@ -257,6 +259,77 @@ void GameWindow::checkPlayerstate()
         timer->stop();
         gameTimer->stop();
         //nextlevel(); to do
+    }
+}
+
+void GameWindow::pauseGame()
+{
+    QPushButton* resume = new QPushButton("continue");
+    resume->setGeometry(play->m_x, play->m_y, 200, 100);
+    resume->setStyleSheet("QPushButton { border: 2px solid black; border-radius: 50px; background-color: #FFFACD; }");
+    QFont font("Arial", 16, QFont::Bold);
+    resume->setFont(font);
+    buttonProxy = new QGraphicsProxyWidget();
+    buttonProxy->setWidget(resume);
+    connect(resume, SIGNAL(clicked()), this, SLOT(resumeGame()));
+    scene->addItem(buttonProxy);
+    scene->update();
+//未实现内容
+    scene->clearFocus();
+    scene->clearSelection();
+    setEnabled(false);
+    QList<QGraphicsItem *> items = scene->items();
+    foreach (QGraphicsItem *item, items) {
+        if (Player* t1 = dynamic_cast<Player*>(item)) {
+            t1->pauseAnimation();
+        } else if (Enemy* t2 = dynamic_cast<Enemy*>(item)) {
+            t2->pauseAnimation();
+        }
+    }
+    // 停止计时器
+
+    gameTimer->stop();
+    timer->stop();
+    //继续游戏按键
+
+}
+
+void GameWindow::resumeGame()
+{
+    setEnabled(true);
+    QList<QGraphicsItem *> items = scene->items();
+    foreach (QGraphicsItem *item, items) {
+        if (Player* t1 = dynamic_cast<Player*>(item)) {
+            t1->resumeAnimation();
+        } else if (Enemy* t2 = dynamic_cast<Enemy*>(item)) {
+            t2->resumeAnimation();
+        }
+    }
+    // 停止计时器
+    gameTimer->start();
+    timer->start();
+    scene->removeItem(buttonProxy);
+    delete buttonProxy;
+    buttonProxy = nullptr;
+
+}
+
+void GameWindow::intensify()
+{
+    if(play->exp % 20 == 19)
+    {
+        scene->clearFocus();  // 清除场景焦点，确保没有项在交互
+        scene->clearSelection();  // 清除场景中的选中项
+            scene->views().at(0)->setEnabled(false);  // 禁用场景中的视图交互
+
+            // 暂停项的计时器
+            QList<QGraphicsItem *> items = scene->items();
+            foreach (QGraphicsItem *item, items) {
+                QGraphicsObject *graphicsObject = dynamic_cast<QGraphicsObject *>(item);
+                if (graphicsObject) {
+                    graphicsObject->setEnabled(false);  // 禁用项的交互
+                }
+            }
     }
 }
 
