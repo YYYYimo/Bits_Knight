@@ -12,10 +12,12 @@
 #include <QSharedDataPointer>
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
+#include <QGraphicsLinearLayout>
 #include "player.h"
 #include "enemy.h"
 #include "dropitem.h"
 #include "subject.h"
+#include "customdialog.h"
 class Player;
 class Enemy;
 class GameWindow : public QWidget, public subject
@@ -36,6 +38,7 @@ public:
     int lastenemytype;
     QSharedPointer<Player> play;
     int playerType;
+    bool isGamepause;
     QDateTime startTime;
     QGraphicsView* view;
     QGraphicsScene* scene;
@@ -52,7 +55,8 @@ private:
     QLabel* coinLable;
     QLabel* showhp;
     QLabel* showexp;
-    QGraphicsProxyWidget* buttonProxy;
+    QGraphicsProxyWidget* dialogProxy;
+    QGraphicsLinearLayout *layout;
 };
 
 #endif // GAMEWINDOW_H

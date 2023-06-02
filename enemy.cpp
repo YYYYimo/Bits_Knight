@@ -107,8 +107,8 @@ QPointF Enemy::getPlayerPos()
 void Enemy::rmenemy()
 {
     lifespantime->stop();
-    GameWindow::enemynum --;
-    QSharedPointer<Enemy> ene = QSharedPointer<Enemy>::create(this);
+    GameWindow::enemynum--;
+    QSharedPointer<Enemy> ene = sharedFromThis();
     qreal lsp = lifespan;
     qreal x = m_x, y = m_y;
     int type = m_type;
@@ -159,7 +159,6 @@ void Enemy::takeDamage(int dam)
 
 void Enemy::attack()
 {
-    //QList<QGraphicsItem*> collisions = collidingItems();
     if(collidesWithItem(play.data(), Qt::IntersectsItemBoundingRect))
     {
         play->takeDamage(m_attack);

@@ -146,9 +146,9 @@ void Bullet::advance()
 void Bullet::rmbullet()
 {
     updatetime->stop();
-    QSharedPointer<Bullet> bull = QSharedPointer<Bullet>::create(this);
+    QSharedPointer<Bullet> bull = sharedFromThis();
     removebullPointer(bull);
-    scene()->removeItem(this);
+    scene()->removeItem(bull.data());
 }
 
 void Bullet::attack()
@@ -162,11 +162,13 @@ void Bullet::attack()
     case elf:
         damage = 5;
     }
-    //QList<QGraphicsItem*> collisions = collidingItems(Qt::IntersectsItemBoundingRect);
     if(collidesWithItem(target.data(), Qt::IntersectsItemBoundingRect))
     {
         target->takeDamage(damage);
-        rmbullet();
+        updatetime->stop();
+        QSharedPointer<Bullet> bull = sharedFromThis();
+        //removebullPointer(bull);
+        scene()->removeItem(bull.data());
     }
 }
 

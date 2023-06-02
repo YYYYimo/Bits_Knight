@@ -40,7 +40,8 @@ SOURCES += \
     playerwizzard.cpp \
     shop.cpp \
     enemyzombie.cpp \
-    gameover.cpp
+    gameover.cpp \
+    customdialog.cpp
 
 HEADERS += \
         widget.h \
@@ -59,7 +60,8 @@ HEADERS += \
     playerwizzard.h \
     shop.h \
     enemyzombie.h \
-    gameover.h
+    gameover.h \
+    customdialog.h
 
 FORMS += \
         widget.ui

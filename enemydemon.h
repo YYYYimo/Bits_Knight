@@ -9,7 +9,6 @@ class enemydemon : public Enemy
 public:
     enemydemon(QSharedPointer<Player> pl);
     ~enemydemon(){}
-    void enemove();
 };
 
 #endif // ENEMYDEMON_H

@@ -189,6 +189,7 @@ void Player::pauseAnimation()
 
 void Player::resumeAnimation()
 {
+    exp++;
     keyRespondTimer->start();
     lifespantime->start();
 }

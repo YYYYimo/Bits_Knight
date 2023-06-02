@@ -6,12 +6,13 @@
 #include <QTimer>
 #include <QObject>
 #include <QSharedPointer>
+#include <QEnableSharedFromThis>
 #include "gamewindow.h"
 #include "enemy.h"
 #include "player.h"
 #include "subject.h"
 enum bullettype {angel, elf};
-class Bullet : public QGraphicsItem, public subject, public QObject
+class Bullet : public QGraphicsItem, public subject, public QObject, public QEnableSharedFromThis<Bullet>
 {
 public:
     Bullet(int t, qreal x, qreal y);

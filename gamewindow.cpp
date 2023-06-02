@@ -6,6 +6,7 @@
 #include "enemyzombie.h"
 #include "player.h"
 #include <QDebug>
+#include <QMessageBox>
 int GameWindow::enemynum = 0;
 GameWindow::GameWindow(QWidget *parent, int player_type):
         QWidget(parent), curtime(0), playerType(player_type)
@@ -209,15 +210,18 @@ void GameWindow::addenemy(int type)
 
 void GameWindow::updateGame()
 {
-    if(play->exp == 5)
-        pauseGame();
-    checkPlayerstate();
-    scene->advance();
+    if(isGamepause == false)
+    {
+        checkPlayerstate();
+        scene->advance();
+    }
 }
 
 void GameWindow::updateTimerLabel()
 {
     curtime++;
+    if(play->exp == 10)
+        pauseGame();
     addenemy(lastenemytype);
      //顺便产生新的敌人
     QDateTime currentTime = QDateTime::currentDateTime();
@@ -264,20 +268,6 @@ void GameWindow::checkPlayerstate()
 
 void GameWindow::pauseGame()
 {
-    QPushButton* resume = new QPushButton("continue");
-    resume->setGeometry(play->m_x, play->m_y, 200, 100);
-    resume->setStyleSheet("QPushButton { border: 2px solid black; border-radius: 50px; background-color: #FFFACD; }");
-    QFont font("Arial", 16, QFont::Bold);
-    resume->setFont(font);
-    buttonProxy = new QGraphicsProxyWidget();
-    buttonProxy->setWidget(resume);
-    connect(resume, SIGNAL(clicked()), this, SLOT(resumeGame()));
-    scene->addItem(buttonProxy);
-    scene->update();
-//未实现内容
-    scene->clearFocus();
-    scene->clearSelection();
-    setEnabled(false);
     QList<QGraphicsItem *> items = scene->items();
     foreach (QGraphicsItem *item, items) {
         if (Player* t1 = dynamic_cast<Player*>(item)) {
@@ -287,16 +277,19 @@ void GameWindow::pauseGame()
         }
     }
     // 停止计时器
-
+    isGamepause = true;
     gameTimer->stop();
     timer->stop();
-    //继续游戏按键
-
+    CustomDialog* dialog = new CustomDialog(play);
+    connect(dialog, SIGNAL(finished(int)),
+            this, SLOT(resumeGame()));
+    dialog->setGeometry(0, 0, 500, 300);
+    dialog->open();
 }
 
 void GameWindow::resumeGame()
 {
-    setEnabled(true);
+    isGamepause = false;
     QList<QGraphicsItem *> items = scene->items();
     foreach (QGraphicsItem *item, items) {
         if (Player* t1 = dynamic_cast<Player*>(item)) {
@@ -305,12 +298,8 @@ void GameWindow::resumeGame()
             t2->resumeAnimation();
         }
     }
-    // 停止计时器
     gameTimer->start();
     timer->start();
-    scene->removeItem(buttonProxy);
-    delete buttonProxy;
-    buttonProxy = nullptr;
 
 }
 

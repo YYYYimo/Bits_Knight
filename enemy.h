@@ -7,13 +7,14 @@
 #include <QObject>
 #include <QPainterPath>
 #include <QSharedPointer>
+#include <QEnableSharedFromThis>
 #include "player.h"
 #include "gamewindow.h"
 #include "subject.h"
 enum Enemytype {demon = -1, zombie = 1};
 enum direct {Right = 0, Down = 1, Left = 2, Up = 3};
 class Player;
-class Enemy : public QGraphicsItem, public QObject, public subject
+class Enemy : public QGraphicsItem, public QObject, public subject, public QEnableSharedFromThis<Enemy>
 {
     friend class Player;
 public:
