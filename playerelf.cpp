@@ -9,7 +9,7 @@ playerelf::playerelf()
     height = 110;
     m_x = 0;
     m_y = 0;
-    m_speed = 2;
+    m_speed = 1.5;
 
     QString imgpath = "://resource/gif/elf_female_run.gif";
     m_movie = new QMovie(imgpath);

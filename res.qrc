@@ -25,5 +25,7 @@
         <file>resource/gif/wizzard_stand.gif</file>
         <file>resource/gif/elf_stand.gif</file>
         <file>resource/img/expbox.png</file>
+        <file>resource/img/speedup.png</file>
+        <file>resource/img/sword.png</file>
     </qresource>
 </RCC>

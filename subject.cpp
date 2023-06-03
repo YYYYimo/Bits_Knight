@@ -1,7 +1,7 @@
 #include "subject.h"
 #include "bullet.h"
 #include <algorithm>
-
+#include <QDebug>
 QSharedPointer<Player> subject::play_p = nullptr;
 QVector<QSharedPointer<Enemy>> subject::enevec;
 QVector<QSharedPointer<Bullet>> subject::bullvec;
@@ -21,6 +21,7 @@ int subject::coins = 0;
  void subject::addplayerPointer(QSharedPointer<Player> p)
  {
      play_p = p;
+     qDebug() << (int)play_p.data();
  }
 
  void subject::removeenemyPointer(QSharedPointer<Enemy> e)

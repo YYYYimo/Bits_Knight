@@ -31,7 +31,6 @@ public:
     void setgameTimerLabel();
     void checkPlayerstate();
     void pauseGame();
-    void intensify(); //玩家的局内强化
     //void nextlevel(); to do
     static int enemynum;
     int curtime;

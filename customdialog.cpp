@@ -1,44 +1,92 @@
 #include "customdialog.h"
 #include <QDebug>
-CustomDialog::CustomDialog(QSharedPointer<Player> p, QWidget* parent)
-    : QDialog(parent), play(p)
+CustomDialog::CustomDialog(QSharedPointer<Player> p, int ty, QWidget* parent)
+    : QDialog(parent), play(p), type(ty)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     // 创建 QLabel 控件并加载图片
-    QLabel* imageLabel = new QLabel(this);
-    QPixmap image("://resource/img/expbox.png");  // 替换为您的图片路径
-    imageLabel->setPixmap(image);
+    if(type == 0)
+    {
+        QLabel* imageLabel1 = new QLabel(this);
+        QLabel* imageLabel2 = new QLabel(this);
+        QLabel* imageLabel3 = new QLabel(this);
 
-    imageLabel->setScaledContents(true);  // 自适应大小
-    imageLabel->setFixedSize(200, 200);   // 设置固定大小
+        QPixmap image1("://resource/img/ui_heart_full.png");  // 第一张图片路径
+        QPixmap image2("://resource/img/sword.png");  // 第二张图片路径
+        QPixmap image3("://resource/img/speedup.png");  // 第三张图片路径
 
-    // 创建 QLabel 来显示文字
-    QLabel* textLabel = new QLabel("Hello, World!", this);
-    textLabel->setAlignment(Qt::AlignCenter);  // 文字居中对齐
+        imageLabel1->setPixmap(image1);
+        imageLabel2->setPixmap(image2);
+        imageLabel3->setPixmap(image3);
 
-    // 创建 QPushButton 控件
-    QPushButton* closeButton = new QPushButton("Close", this);
+        imageLabel1->setFixedSize(100, 100);
+        imageLabel2->setFixedSize(100, 100);
+        imageLabel3->setFixedSize(100, 100);
+        imageLabel1->setScaledContents(true);
+        imageLabel2->setScaledContents(true);
+        imageLabel3->setScaledContents(true);
+        // 创建 QLabel 来显示文字
+        QLabel* textLabel1 = new QLabel("Hp ++", this);
+        QLabel* textLabel2 = new QLabel("Attack ++", this);
+        QLabel* textLabel3 = new QLabel("Speed ++", this);
 
-    // 连接按钮的 clicked() 信号到槽函数，实现关闭窗口
-    connect(closeButton, &QPushButton::clicked, this, &CustomDialog::OnAccept);
-    // 创建布局，并将控件添加到布局中
-    // 设置布局到对话框中
-    QVBoxLayout* layout = new QVBoxLayout;
-        layout->addWidget(imageLabel);
-        layout->addWidget(closeButton);
-        layout->addWidget(textLabel);
+        // 创建 QPushButton 控件
+        QPushButton* button1 = new QPushButton("choose it", this);
+        QPushButton* button2 = new QPushButton("choose it", this);
+        QPushButton* button3 = new QPushButton("choose it", this);
 
-        // 设置布局到对话框中
-        setLayout(layout);
+        connect(button1, &QPushButton::clicked, this, &CustomDialog::OnAcceptHp);
+        connect(button2, &QPushButton::clicked, this, &CustomDialog::OnAcceptAtt);
+        connect(button3, &QPushButton::clicked, this, &CustomDialog::OnAcceptSpeed);
+
+
+        // 创建水平布局，并将控件添加到布局中
+        QVBoxLayout* layout1 = new QVBoxLayout;
+        layout1->addWidget(textLabel1);
+        layout1->addWidget(imageLabel1);
+        layout1->addWidget(button1);
+
+        QVBoxLayout* layout2 = new QVBoxLayout;
+        layout2->addWidget(textLabel2);
+        layout2->addWidget(imageLabel2);
+        layout2->addWidget(button2);
+
+        QVBoxLayout* layout3 = new QVBoxLayout;
+        layout3->addWidget(textLabel3);
+        layout3->addWidget(imageLabel3);
+        layout3->addWidget(button3);
+
+        // 创建水平布局
+        QHBoxLayout* mainLayout = new QHBoxLayout;
+        mainLayout->addLayout(layout1);
+        mainLayout->addSpacing(20);  // 间隔
+        mainLayout->addLayout(layout2);
+        mainLayout->addSpacing(20);  // 间隔
+        mainLayout->addLayout(layout3);
+
+        // 设置主布局到对话框中
+        setLayout(mainLayout);
+    }
     qDebug() << "gen";
 
         // Set the bounding rectangle for the dialog item
 }
 
-void CustomDialog::OnAccept()
+void CustomDialog::OnAcceptHp()
 {
-    play->m_hp += 5;
-    qDebug() << "close";
+    play->setHP(5);
+    close();
+}
+
+void CustomDialog::OnAcceptAtt()
+{
+    play->setAttack(5);
+    close();
+}
+
+void CustomDialog::OnAcceptSpeed()
+{
+    play->setSpeed(5);
     close();
 }
 

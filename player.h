@@ -28,22 +28,19 @@ public:
     void pauseAnimation();
     void resumeAnimation();
 
-
     qreal m_x;
     qreal m_y;
     int m_hp;
     int exp;
+    int m_attack;
 protected:
     QList<int> keys;
-    int m_type;
 
-    int m_attack;
+    qreal m_speed;
+    int m_type;
     int width;
     int height;
     int lifespan;
-
-
-    qreal m_speed;
     QTimer* keyRespondTimer;
     QTimer* lifespantime;
     QMovie* m_movie;

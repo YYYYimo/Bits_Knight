@@ -153,15 +153,9 @@ void Bullet::rmbullet()
 
 void Bullet::attack()
 {
-    int damage;
-    //tips: 直接从item类中读取伤害数值而不是直接设定数值
-    switch(this->m_type)
-    {
-    case angel:
-        damage = 5;
-    case elf:
-        damage = 5;
-    }
+    if(play_p.data())
+        qDebug() << play_p.data();
+    int damage = play_p.data()->m_attack;
     if(collidesWithItem(target.data(), Qt::IntersectsItemBoundingRect))
     {
         target->takeDamage(damage);

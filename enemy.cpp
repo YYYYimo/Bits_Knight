@@ -41,6 +41,23 @@ void Enemy::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     Q_UNUSED(widget)
     QImage image = m_movie->currentImage();
     painter->drawImage(QRectF(m_x, m_y, width, height), image);
+    // 绘制血条
+    int barWidth = 30;  // 血条宽度
+    int barHeight = 5;  // 血条高度
+    int barX = m_x + (width - barWidth) / 2;  // 血条的 x 坐标居中对齐
+    int barY = m_y - barHeight - 5;  // 血条的 y 坐标位于怪物图像上方一定距离
+
+    // 绘制血条的底色
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(Qt::gray);
+    painter->drawRect(barX, barY, barWidth, barHeight);
+
+    // 绘制实际血量的部分
+    float healthPercentage = static_cast<float>(m_hp) / static_cast<float>(fullHp);
+    int healthBarWidth = static_cast<int>(healthPercentage * barWidth);
+    painter->setBrush(Qt::red);
+    painter->drawRect(barX, barY, healthBarWidth, barHeight);
+
     update();
 }
 
@@ -106,6 +123,7 @@ QPointF Enemy::getPlayerPos()
 
 void Enemy::rmenemy()
 {
+    updatetime->stop();
     lifespantime->stop();
     GameWindow::enemynum--;
     QSharedPointer<Enemy> ene = sharedFromThis();
@@ -148,12 +166,12 @@ void Enemy::checkEnemystate()
 void Enemy::updateEnemy()
 {
     lifespan++;
-    checkEnemystate();
     attack();
 }
 
 void Enemy::takeDamage(int dam)
 {
+    qDebug() << (int)this << m_hp;
     m_hp -= dam;
 }
 
@@ -259,7 +277,10 @@ void Enemy::enemove()
 void Enemy::slotTimeOut()
 {
     if(this)
+    {
         enemove();
+        checkEnemystate();
+    }
 }
 
 void Enemy::pauseAnimation()

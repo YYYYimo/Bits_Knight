@@ -3,6 +3,7 @@ enemyzombie::enemyzombie(QSharedPointer<Player> pl)
 {
     m_type = 0;
     m_hp = 10;
+    fullHp = 10;
     m_attack = 1;
     width = 70;
     height = 70;

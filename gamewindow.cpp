@@ -220,7 +220,7 @@ void GameWindow::updateGame()
 void GameWindow::updateTimerLabel()
 {
     curtime++;
-    if(play->exp == 10)
+    if(play->exp % 20 == 0)
         pauseGame();
     addenemy(lastenemytype);
      //顺便产生新的敌人
@@ -280,10 +280,10 @@ void GameWindow::pauseGame()
     isGamepause = true;
     gameTimer->stop();
     timer->stop();
-    CustomDialog* dialog = new CustomDialog(play);
+    CustomDialog* dialog = new CustomDialog(play, 0);
     connect(dialog, SIGNAL(finished(int)),
             this, SLOT(resumeGame()));
-    dialog->setGeometry(0, 0, 500, 300);
+    dialog->setGeometry(800, 600, 500, 200);
     dialog->open();
 }
 
@@ -300,27 +300,8 @@ void GameWindow::resumeGame()
     }
     gameTimer->start();
     timer->start();
-
 }
 
-void GameWindow::intensify()
-{
-    if(play->exp % 20 == 19)
-    {
-        scene->clearFocus();  // 清除场景焦点，确保没有项在交互
-        scene->clearSelection();  // 清除场景中的选中项
-            scene->views().at(0)->setEnabled(false);  // 禁用场景中的视图交互
-
-            // 暂停项的计时器
-            QList<QGraphicsItem *> items = scene->items();
-            foreach (QGraphicsItem *item, items) {
-                QGraphicsObject *graphicsObject = dynamic_cast<QGraphicsObject *>(item);
-                if (graphicsObject) {
-                    graphicsObject->setEnabled(false);  // 禁用项的交互
-                }
-            }
-    }
-}
 
 
 

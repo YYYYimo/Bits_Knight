@@ -47,6 +47,7 @@ public:
 protected:
     int m_type;
     int m_hp;
+    int fullHp;
     int m_attack;
     int width;
     int height;

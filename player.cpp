@@ -9,7 +9,7 @@
 Player::Player()
     : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr), lifespan(0)
 {   //具体数值在对应玩家角色类中初始化
-    exp = 0;
+    exp = 1;
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
 
@@ -54,7 +54,7 @@ void Player::setMovie(const QString& path)
 void Player::setSpeed(qreal speed)
 {
     // 设置角色的移动速度
-    m_speed = speed;
+    m_speed += speed;
 }
 
 void Player::setPos(qreal x, qreal y)
@@ -67,14 +67,15 @@ void Player::setPos(qreal x, qreal y)
 void Player::setHP(int hp)
 {
     // 设置角色的生命值
-    m_hp = hp;
+    m_hp += hp;
 }
 
 void Player::setAttack(int attack)
 {
     // 设置角色的攻击力
-    m_attack = attack;
+    m_attack += attack;
 }
+
 
 void Player::keyPressEvent(QKeyEvent *event)
 {
