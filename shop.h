@@ -7,7 +7,10 @@ class Shop : public QWidget
 public:
     explicit Shop(QWidget *parent = nullptr);
     ~Shop() {}
-
+private slots:
+    void addSpeed();
+    void addAttack();
+    void havePets();
 };
 
 #endif // SHOP_H

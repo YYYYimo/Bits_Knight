@@ -27,5 +27,9 @@
         <file>resource/img/expbox.png</file>
         <file>resource/img/speedup.png</file>
         <file>resource/img/sword.png</file>
+        <file>resource/img/bulletForElf.png</file>
+        <file>resource/img/bulletForWizzard.png</file>
+        <file>resource/gif/shop_heart.gif</file>
+        <file>resource/gif/shop_weapon.gif</file>
     </qresource>
 </RCC>

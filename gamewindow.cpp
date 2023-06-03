@@ -8,10 +8,9 @@
 #include <QDebug>
 #include <QMessageBox>
 int GameWindow::enemynum = 0;
-GameWindow::GameWindow(QWidget *parent, int player_type):
+GameWindow::GameWindow(QWidget *parent, int player_type, int isRenew):
         QWidget(parent), curtime(0), playerType(player_type)
 {
-
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,1500,1200);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);//设置不适用索引
@@ -23,7 +22,9 @@ GameWindow::GameWindow(QWidget *parent, int player_type):
     view->setCacheMode(QGraphicsView::CacheBackground);
     view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
-    addplayer(player_type);//根据角色选择界面选择加载的角色 todo
+    addplayer(player_type);
+    if(isRenew == 1)
+        loadGame();
     lastenemytype = 0;
 
     timer = new QTimer(this);
@@ -123,6 +124,7 @@ void GameWindow::addplayer(int type)
     default:
         break;
     }
+    connect(play.data(), &Player::keyPressed, this, &GameWindow::keyPressEvent);
 }
 
 void GameWindow::addenemy(int type)
@@ -252,19 +254,26 @@ void GameWindow::updateTimerLabel()
 
 void GameWindow::checkPlayerstate()
 {
-    if(play->m_hp <= 0)
+    if(play->m_hp < 0)
     {
-
         timer->stop();
         gameTimer->stop();
         endGame(0);
     }
-    if(curtime == 20)
+    if(curtime == 120)
     {
 
         timer->stop();
         gameTimer->stop();
         endGame(1);
+    }
+}
+
+void GameWindow::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape) {
+        saveGame();
+        close();
     }
 }
 
@@ -343,19 +352,6 @@ void GameWindow::endGame(int situ)
     }
 }
 
-void GameWindow::read(const QJsonObject &json)
-{
-    if(json.contains("player") && json["player"].isObject())
-        play->read(json["player"].toObject());
-}
-
-void GameWindow::write(const QJsonObject &json)
-{
-    QJsonObject playerObject;
-    play->write(playerObject);
-    json["player"] = playerObject;
-}
-
 void GameWindow::saveGame()
 {
     QFile saveFile(QStringLiteral("D:/Qt_project/night/save.json"));
@@ -365,10 +361,14 @@ void GameWindow::saveGame()
     }
 
     QJsonObject jsonObject;
-    jsonObject.insert("name", "tom");
-    jsonObject.insert("age", "18");
-    jsonObject.insert("time", QDateTime::currentDateTime().toString());
-
+    jsonObject.insert("player_type", play->m_type);
+    jsonObject.insert("player_hp", play->m_hp);
+    jsonObject.insert("player_exp", play->exp);
+    jsonObject.insert("player_lifespan", play->lifespan);
+    jsonObject.insert("player_att", play->m_attack);
+    jsonObject.insert("player_x", play->m_x);
+    jsonObject.insert("player_y", play->m_y);
+    jsonObject.insert("coins", subject::coins);
 // 使用QJsonDocument设置该json对象
     QJsonDocument jsonDoc;
     jsonDoc.setObject(jsonObject);
@@ -376,17 +376,13 @@ void GameWindow::saveGame()
 // 将json以文本形式写入文件并关闭文件。
     saveFile.write(jsonDoc.toJson());
     saveFile.close();
-
-    /*QJsonObject gameObject;
-    write(gameObject);
-    saveFile.write(QJsonDocument(gameObject).toJson());
-    saveFile.close();*/
+//关闭窗口
     close();
 }
 
 void GameWindow::loadGame()
 {
-    QFile loadFile( QStringLiteral("save.json"));
+    QFile loadFile( QStringLiteral("D:/Qt_project/night/save.json"));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open save file.");
@@ -394,8 +390,38 @@ void GameWindow::loadGame()
 
     QByteArray saveData = loadFile.readAll();
     QJsonDocument loadDoc( QJsonDocument::fromJson(saveData));
-
-    read(loadDoc.object());
+    QJsonObject json = loadDoc.object();
+    if(json.contains("player_type") && json["player_type"].isDouble())
+    {
+        play->m_type = json["player_type"].toInt();
+        qDebug() << "play->m_type" << play->m_type;
+    }
+    if(json.contains("player_hp") && json["player_hp"].isDouble())
+    {
+        play->m_hp = json["player_hp"].toInt();
+        qDebug() << "play->m_hp" << play->m_hp;
+    }
+    if(json.contains("player_exp") && json["player_exp"].isDouble())
+    {
+        play->exp = json["player_exp"].toInt();
+        qDebug() << "play->exp" << play->exp;
+    }
+    if(json.contains("player_att") && json["player_att"].isDouble())
+    {
+        play->m_attack = json["player_att"].toInt();
+        qDebug() << "play->m_attack" << play->m_attack;
+    }
+    if(json.contains("player_lifespan") && json["player_lifespan"].isDouble())
+    {
+        play->lifespan = json["player_lifespan"].toInt();
+        qDebug() << "play->lifespan" << play->lifespan;
+    }
+    if(json.contains("player_x") && json["player_x"].isDouble())
+        play->m_x = json["player_x"].toDouble();
+    if(json.contains("player_y") && json["player_y"].isDouble())
+        play->m_y = json["player_y"].toDouble();
+    if(json.contains("coins") && json["coins"].isDouble())
+        subject::coins = json["coins"].toInt();
 
 }
 

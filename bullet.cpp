@@ -41,8 +41,13 @@ Bullet::Bullet(int t, qreal x, qreal y, QSharedPointer<Player> pl):m_type(t), m_
     {
         m_speed = 5;
         m_atk = 2;
+        imgpath = "://resource/img/bulletForElf.png";
         break;
     }
+    case wizzard:
+        m_speed = 3;
+        m_atk = 2;
+        imgpath = "://resource/img/bulletForWizzard.png";
     }
     updatetime = new QTimer(this);
     connect(updatetime, &QTimer::timeout, this, &Bullet::slotTimeOut);

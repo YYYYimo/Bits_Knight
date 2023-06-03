@@ -28,7 +28,7 @@ class GameWindow : public QWidget, public subject
     Q_OBJECT
 public:
     enum SaveFormat {Json};
-    GameWindow(QWidget *parent = nullptr, int player_type = 0);
+    GameWindow(QWidget *parent, int player_type, int isRenew);
     ~GameWindow();
     void addplayer(int type);
     void addenemy(int type);
@@ -36,8 +36,7 @@ public:
     void checkPlayerstate();
     void pauseGame();
     void endGame(int situ);
-    void read(const QJsonObject &json);
-    void write(const QJsonObject &json);
+    void keyPressEvent(QKeyEvent* event);
     //void nextlevel(); to do
     static int enemynum;
     int curtime;

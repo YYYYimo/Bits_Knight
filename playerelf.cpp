@@ -2,7 +2,7 @@
 
 playerelf::playerelf()
 {
-    m_type = 0;
+    m_type = 1;
     m_hp = 10;
     m_attack = 2;
     width = 70;

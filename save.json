@@ -1,5 +1,10 @@
 {
-    "age": "18",
-    "name": "tom",
-    "time": "周六 6月 3 17:45:02 2023"
+    "coins": 14,
+    "player_att": 11,
+    "player_exp": 86,
+    "player_hp": 8,
+    "player_lifespan": 81,
+    "player_type": 0,
+    "player_x": 157,
+    "player_y": 116
 }

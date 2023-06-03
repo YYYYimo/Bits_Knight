@@ -53,6 +53,9 @@ private slots:
     void slotTimeOut();
     void updatePlayer();
 
+signals:
+    void keyPressed(QKeyEvent *event);
+
 };
 
 

@@ -59,7 +59,7 @@ void choosehero::startGame(int hero_type)
     QWidget* gamew = new QWidget();
     gamew->resize(1200, 1200);
     setParent(gamew);
-    gamewindow = new GameWindow(gamew, hero_type);
+    gamewindow = new GameWindow(gamew, hero_type, 0);
     gamew->show();
     this->close();
 }

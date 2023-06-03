@@ -2,6 +2,11 @@
 #define STARTMENU_H
 
 #include <QWidget>
+#include <QGraphicsProxyWidget>
+#include <QGraphicsLinearLayout>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
 #include "choosehero.h"
 #include "gamewindow.h"
 #include "shop.h"
@@ -14,6 +19,7 @@ public:
 private slots:
     void chooseWindow();
     void shopWindow();
+    void continueGame();
 private:
     GameWindow* gamewindow;
     choosehero* choose;

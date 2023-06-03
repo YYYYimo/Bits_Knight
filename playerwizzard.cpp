@@ -2,7 +2,7 @@
 #include <QMovie>
 playerwizzard::playerwizzard()
 {
-    m_type = 0;
+    m_type = 2;
     m_hp = 10;
     m_attack = 1;
     width = 70;

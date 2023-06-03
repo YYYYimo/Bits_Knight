@@ -11,7 +11,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "subject.h"
-enum bullettype {angel, elf};
+enum bullettype {angel, elf, wizzard};
 class Bullet : public QGraphicsItem, public subject, public QObject, public QEnableSharedFromThis<Bullet>
 {
 public:
