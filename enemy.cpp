@@ -171,7 +171,6 @@ void Enemy::updateEnemy()
 
 void Enemy::takeDamage(int dam)
 {
-    qDebug() << (int)this << m_hp;
     m_hp -= dam;
 }
 

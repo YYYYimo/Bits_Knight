@@ -5,7 +5,7 @@ CustomDialog::CustomDialog(QSharedPointer<Player> p, int ty, QWidget* parent)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     // 创建 QLabel 控件并加载图片
-    if(type == 0)
+    if(type == 2)
     {
         QLabel* imageLabel1 = new QLabel(this);
         QLabel* imageLabel2 = new QLabel(this);
@@ -67,9 +67,41 @@ CustomDialog::CustomDialog(QSharedPointer<Player> p, int ty, QWidget* parent)
         // 设置主布局到对话框中
         setLayout(mainLayout);
     }
-    qDebug() << "gen";
+    else if(type == 0)
+    {
+        QLabel *label = new QLabel("YOU LOSE", this);
+        label->setAlignment(Qt::AlignCenter);
 
-        // Set the bounding rectangle for the dialog item
+        // 创建 QPushButton 控件来关闭游戏
+        QPushButton *closeButton = new QPushButton("Close Game", this);
+        connect(closeButton, &QPushButton::clicked, this, &CustomDialog::closeGame);
+
+        // 创建垂直布局，并将控件添加到布局中
+        QVBoxLayout *layout = new QVBoxLayout;
+        layout->addWidget(label);
+        layout->addWidget(closeButton);
+
+        // 设置布局到对话框中
+        setLayout(layout);
+    }
+    else if(type == 1)
+    {
+        QLabel *label = new QLabel("YOU WIN", this);
+        label->setAlignment(Qt::AlignCenter);
+
+        // 创建 QPushButton 控件来关闭游戏
+        QPushButton *closeButton = new QPushButton("Close Game", this);
+        connect(closeButton, &QPushButton::clicked, this, &CustomDialog::closeGame);
+
+        // 创建垂直布局，并将控件添加到布局中
+        QVBoxLayout *layout = new QVBoxLayout;
+        layout->addWidget(label);
+        layout->addWidget(closeButton);
+
+        // 设置布局到对话框中
+        setLayout(layout);
+    }
+
 }
 
 void CustomDialog::OnAcceptHp()
@@ -87,6 +119,11 @@ void CustomDialog::OnAcceptAtt()
 void CustomDialog::OnAcceptSpeed()
 {
     play->setSpeed(5);
+    close();
+}
+
+void CustomDialog::closeGame()
+{
     close();
 }
 

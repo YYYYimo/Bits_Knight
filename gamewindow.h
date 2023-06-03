@@ -13,6 +13,9 @@
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
 #include <QGraphicsLinearLayout>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
 #include "player.h"
 #include "enemy.h"
 #include "dropitem.h"
@@ -24,6 +27,7 @@ class GameWindow : public QWidget, public subject
 {
     Q_OBJECT
 public:
+    enum SaveFormat {Json};
     GameWindow(QWidget *parent = nullptr, int player_type = 0);
     ~GameWindow();
     void addplayer(int type);
@@ -31,6 +35,9 @@ public:
     void setgameTimerLabel();
     void checkPlayerstate();
     void pauseGame();
+    void endGame(int situ);
+    void read(const QJsonObject &json);
+    void write(const QJsonObject &json);
     //void nextlevel(); to do
     static int enemynum;
     int curtime;
@@ -46,6 +53,8 @@ private slots:
     void updateGame(); //用于刷新游戏界面
     void updateTimerLabel(); //用于更新计时器数字显示
     void resumeGame();
+    void saveGame();
+    void loadGame();
     
 private:
     QTimer* timer; //用于刷新游戏界面

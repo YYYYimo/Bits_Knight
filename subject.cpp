@@ -21,7 +21,6 @@ int subject::coins = 0;
  void subject::addplayerPointer(QSharedPointer<Player> p)
  {
      play_p = p;
-     qDebug() << (int)play_p.data();
  }
 
  void subject::removeenemyPointer(QSharedPointer<Enemy> e)

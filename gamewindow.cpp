@@ -254,15 +254,17 @@ void GameWindow::checkPlayerstate()
 {
     if(play->m_hp <= 0)
     {
+
         timer->stop();
         gameTimer->stop();
-        //加载失败界面 to do
+        endGame(0);
     }
-    if(curtime == 120)
+    if(curtime == 20)
     {
+
         timer->stop();
         gameTimer->stop();
-        //nextlevel(); to do
+        endGame(1);
     }
 }
 
@@ -280,9 +282,8 @@ void GameWindow::pauseGame()
     isGamepause = true;
     gameTimer->stop();
     timer->stop();
-    CustomDialog* dialog = new CustomDialog(play, 0);
-    connect(dialog, SIGNAL(finished(int)),
-            this, SLOT(resumeGame()));
+    CustomDialog* dialog = new CustomDialog(play, 2);
+    connect(dialog, SIGNAL(finished(int)), this, SLOT(resumeGame()));
     dialog->setGeometry(800, 600, 500, 200);
     dialog->open();
 }
@@ -300,6 +301,102 @@ void GameWindow::resumeGame()
     }
     gameTimer->start();
     timer->start();
+}
+
+void GameWindow::endGame(int situ)
+{
+    if(situ == 0) //lose
+    {
+        QList<QGraphicsItem *> items = scene->items();
+        foreach (QGraphicsItem *item, items) {
+            if (Player* t1 = dynamic_cast<Player*>(item)) {
+                t1->pauseAnimation();
+            } else if (Enemy* t2 = dynamic_cast<Enemy*>(item)) {
+                t2->pauseAnimation();
+            }
+        }
+        // 停止计时器
+        isGamepause = true;
+        gameTimer->stop();
+        timer->stop();
+        CustomDialog* loseGame = new CustomDialog(play, 0);
+        connect(loseGame, SIGNAL(finished(int)), this, SLOT(close()));
+        loseGame->open();
+    }
+    else //win
+    {
+        QList<QGraphicsItem *> items = scene->items();
+        foreach (QGraphicsItem *item, items) {
+            if (Player* t1 = dynamic_cast<Player*>(item)) {
+                t1->pauseAnimation();
+            } else if (Enemy* t2 = dynamic_cast<Enemy*>(item)) {
+                t2->pauseAnimation();
+            }
+        }
+        // 停止计时器
+        isGamepause = true;
+        gameTimer->stop();
+        timer->stop();
+        CustomDialog* winGame = new CustomDialog(play, 1);
+        connect(winGame, SIGNAL(finished(int)), this, SLOT(saveGame()));
+        winGame->open();
+    }
+}
+
+void GameWindow::read(const QJsonObject &json)
+{
+    if(json.contains("player") && json["player"].isObject())
+        play->read(json["player"].toObject());
+}
+
+void GameWindow::write(const QJsonObject &json)
+{
+    QJsonObject playerObject;
+    play->write(playerObject);
+    json["player"] = playerObject;
+}
+
+void GameWindow::saveGame()
+{
+    QFile saveFile(QStringLiteral("D:/Qt_project/night/save.json"));
+    if(!saveFile.open(QIODevice::WriteOnly))
+    {
+        qWarning("Couldn't open the file.");
+    }
+
+    QJsonObject jsonObject;
+    jsonObject.insert("name", "tom");
+    jsonObject.insert("age", "18");
+    jsonObject.insert("time", QDateTime::currentDateTime().toString());
+
+// 使用QJsonDocument设置该json对象
+    QJsonDocument jsonDoc;
+    jsonDoc.setObject(jsonObject);
+
+// 将json以文本形式写入文件并关闭文件。
+    saveFile.write(jsonDoc.toJson());
+    saveFile.close();
+
+    /*QJsonObject gameObject;
+    write(gameObject);
+    saveFile.write(QJsonDocument(gameObject).toJson());
+    saveFile.close();*/
+    close();
+}
+
+void GameWindow::loadGame()
+{
+    QFile loadFile( QStringLiteral("save.json"));
+
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open save file.");
+    }
+
+    QByteArray saveData = loadFile.readAll();
+    QJsonDocument loadDoc( QJsonDocument::fromJson(saveData));
+
+    read(loadDoc.object());
+
 }
 
 

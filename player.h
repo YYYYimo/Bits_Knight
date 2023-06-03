@@ -3,10 +3,12 @@
 #include <QObject>
 #include <QGraphicsItem>
 #include <QSharedPointer>
+#include <QEnableSharedFromThis>
+#include <QJsonObject>
 #include "gamewindow.h"
 #include "bullet.h"
 #include "subject.h"
-class Player : public QGraphicsObject, public subject
+class Player : public QGraphicsObject, public subject, public QEnableSharedFromThis<Player>
 {
     Q_OBJECT
     friend class GameWindow;
@@ -27,6 +29,8 @@ public:
     void pickupItem();
     void pauseAnimation();
     void resumeAnimation();
+    void read(const QJsonObject &json);
+    void write(QJsonObject &json);
 
     qreal m_x;
     qreal m_y;

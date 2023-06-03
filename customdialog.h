@@ -18,6 +18,7 @@ private slots:
     void OnAcceptHp();
     void OnAcceptAtt();
     void OnAcceptSpeed();
+    void closeGame();
 
 private:
     QSharedPointer<Player> play;

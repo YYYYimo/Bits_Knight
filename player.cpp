@@ -157,7 +157,8 @@ void Player::attack()
 {
     if(lifespan != 0 && lifespan % 1 == 0)//设置发射子弹时间间隔
     {
-        QSharedPointer<Bullet> bull = QSharedPointer<Bullet>(new Bullet(m_type, m_x, m_y));
+        QSharedPointer<Player> pl = sharedFromThis();
+        QSharedPointer<Bullet> bull = QSharedPointer<Bullet>(new Bullet(m_type, m_x, m_y, pl));
         scene()->addItem(bull.data());
         addbullPointer(bull);
     }
@@ -193,6 +194,37 @@ void Player::resumeAnimation()
     exp++;
     keyRespondTimer->start();
     lifespantime->start();
+}
+
+void Player::read(const QJsonObject &json)
+{
+    if(json.contains("player_type") && json["player_type"].isDouble())
+        m_type = json["player_type"].toInt();
+    if(json.contains("player_hp") && json["player_hp"].isDouble())
+        m_hp = json["playerhp"].toInt();
+    if(json.contains("player_exp") && json["player_exp"].isDouble())
+        exp = json["player_exp"].toInt();
+    if(json.contains("player_att") && json["player_att"].isDouble())
+        m_attack = json["player_att"].toInt();
+    if(json.contains("player_lifespan") && json["player_lifespan"].isDouble())
+        lifespan = json["player_lifespan"].toInt();
+    if(json.contains("player_x") && json["player_x"].isDouble())
+        m_x = json["player_x"].toDouble();
+    if(json.contains("player_y") && json["player_y"].isDouble())
+        m_y = json["player_y"].toDouble();
+}
+
+void Player::write(QJsonObject &json)
+{
+    qDebug() << "here";
+    json["player_type"] = m_type;
+    json["player_hp"] = m_hp;
+    json["player_exp"] = exp;
+    json["player_att"] = m_attack;
+    json["player_lifespan"] = lifespan;
+    json["player_x"] = m_x;
+    json["player_y"] = m_y;
+
 }
 
 

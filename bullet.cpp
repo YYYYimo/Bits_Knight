@@ -8,7 +8,7 @@
 #include <QList>
 #include <QVector>
 #include <limits>
-Bullet::Bullet(int t, qreal x, qreal y):m_type(t), m_x(x), m_y(y)
+Bullet::Bullet(int t, qreal x, qreal y, QSharedPointer<Player> pl):m_type(t), m_x(x), m_y(y)
 {
     //子弹发射时选定一个离玩家最近的敌人，并持续追踪
     qreal mindis = std::numeric_limits<qreal>::max();
@@ -26,6 +26,7 @@ Bullet::Bullet(int t, qreal x, qreal y):m_type(t), m_x(x), m_y(y)
             mindis = dis;
             target = e;
         }
+        play = pl;
     }
     switch(t)
     {
@@ -153,9 +154,7 @@ void Bullet::rmbullet()
 
 void Bullet::attack()
 {
-    if(play_p.data())
-        qDebug() << play_p.data();
-    int damage = play_p.data()->m_attack;
+    int damage = play->m_attack;
     if(collidesWithItem(target.data(), Qt::IntersectsItemBoundingRect))
     {
         target->takeDamage(damage);

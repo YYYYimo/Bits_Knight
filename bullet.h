@@ -15,7 +15,7 @@ enum bullettype {angel, elf};
 class Bullet : public QGraphicsItem, public subject, public QObject, public QEnableSharedFromThis<Bullet>
 {
 public:
-    Bullet(int t, qreal x, qreal y);
+    Bullet(int t, qreal x, qreal y, QSharedPointer<Player> pl);
     Bullet(Bullet*){} //
     ~Bullet(){}
     
@@ -36,6 +36,7 @@ private:
     qreal m_x;
     qreal m_y;
     QSharedPointer<Enemy> target;
+    QSharedPointer<Player> play;
     QTimer* updatetime;
 
 protected:
