@@ -43,30 +43,22 @@ StartMenu::StartMenu(QWidget *parent):QWidget(parent)
 
 void StartMenu::chooseWindow()
 {
-    QWidget* choosew = new QWidget();
-    choosew->resize(1200, 1200);
-    setParent(choosew);
-    choose = new choosehero(choosew);
-    choosew->show();
+    choose = new choosehero();
+    choose->resize(1200, 1200);
+    choose->show();
     this->close();
 }
 
 void StartMenu::shopWindow()
 {
-    QWidget* shopw = new QWidget();
-    shopw->resize(800, 280);
-    setParent(shopw);
-    shop = new Shop(shopw);
-    shopw->show();
+    shop = new Shop();
+    shop->resize(800, 280);
+    shop->show();
     this->close();
 }
 
 void StartMenu::continueGame()
 {
-    QWidget* renew = new QWidget();
-    renew->resize(1200, 1200);
-    setParent(renew);
-
     QFile loadFile( QStringLiteral("D:/Qt_project/night/save.json"));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
@@ -80,8 +72,9 @@ void StartMenu::continueGame()
         player_type = json["player_type"].toInt();
 
 
-    gamewindow = new GameWindow(renew, player_type, 1);
-    renew->show();
+    gamewindow = new GameWindow(player_type, 1);
+    gamewindow->resize(1200, 1200);
+    gamewindow->show();
     this->close();
 }
 

@@ -7,9 +7,10 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QFile>
+#include "shop.h"
 #include "choosehero.h"
 #include "gamewindow.h"
-#include "shop.h"
+class Shop;
 class StartMenu: public QWidget
 {
     Q_OBJECT

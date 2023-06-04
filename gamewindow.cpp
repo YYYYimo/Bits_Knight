@@ -5,11 +5,13 @@
 #include "enemydemon.h"
 #include "enemyzombie.h"
 #include "player.h"
+#include "startmenu.h"
+#include "pet.h"
 #include <QDebug>
 #include <QMessageBox>
 int GameWindow::enemynum = 0;
-GameWindow::GameWindow(QWidget *parent, int player_type, int isRenew):
-        QWidget(parent), curtime(0), playerType(player_type)
+GameWindow::GameWindow(int player_type, int isRenew):
+        curtime(0), playerType(player_type)
 {
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,1500,1200);
@@ -17,16 +19,15 @@ GameWindow::GameWindow(QWidget *parent, int player_type, int isRenew):
 
     view = new QGraphicsView(scene, this);
     view->resize(1502,1202);
-    view->setRenderHint(QPainter::Antialiasing);
+    view->setRenderHint(QPainter::Antialiasing, true);
     view->setBackgroundBrush(QPixmap("://resource/img/map/Map001.png"));
     view->setCacheMode(QGraphicsView::CacheBackground);
     view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
-
+    ishavepet = 0;
     addplayer(player_type);
     if(isRenew == 1)
         loadGame();
-    lastenemytype = 0;
-
+    addpet();
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
     timer->start(15);
@@ -34,7 +35,6 @@ GameWindow::GameWindow(QWidget *parent, int player_type, int isRenew):
     setgameTimerLabel();
 
     lastenemytype = 1;
-
     view->show();
 }
 
@@ -74,6 +74,12 @@ void GameWindow::setgameTimerLabel()
     QPixmap scaledPixmapexp = pixmapexp.scaled(30, 30, Qt::KeepAspectRatio);
     expbox->setPixmap(scaledPixmapexp);
     expbox->setGeometry(280, 3, 50, 50);
+
+    QLabel *hintLabel = new QLabel(this);
+    hintLabel->setText("按ESC回到主界面");
+    QFont font1("Arial", 12, QFont::Bold);
+    hintLabel->setFont(font1);
+    hintLabel->setGeometry(1000, 5, 800, 50);
 
     showhp = new QLabel(this);
     showhp->setFont(font);
@@ -209,6 +215,16 @@ void GameWindow::addenemy(int type)
     }
 }
 
+void GameWindow::addpet()
+{
+    if(ishavepet == 1)
+    {
+        QSharedPointer<Pet> mypet = QSharedPointer<Pet>(new Pet(play->m_x - 50, play->m_y - 50, play));
+        scene->addItem(mypet.data());
+        addpetPointer(mypet);
+    }
+}
+
 
 void GameWindow::updateGame()
 {
@@ -269,11 +285,15 @@ void GameWindow::checkPlayerstate()
     }
 }
 
+
 void GameWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
         saveGame();
-        close();
+        StartMenu* startmenu = new StartMenu();
+        startmenu->resize(1200, 1200);
+        startmenu->show();
+        this->close();
     }
 }
 
@@ -366,9 +386,11 @@ void GameWindow::saveGame()
     jsonObject.insert("player_exp", play->exp);
     jsonObject.insert("player_lifespan", play->lifespan);
     jsonObject.insert("player_att", play->m_attack);
+    jsonObject.insert("player_speed", play->m_speed);
     jsonObject.insert("player_x", play->m_x);
     jsonObject.insert("player_y", play->m_y);
     jsonObject.insert("coins", subject::coins);
+    jsonObject.insert("ishavepets", ishavepet);
 // 使用QJsonDocument设置该json对象
     QJsonDocument jsonDoc;
     jsonDoc.setObject(jsonObject);
@@ -416,13 +438,23 @@ void GameWindow::loadGame()
         play->lifespan = json["player_lifespan"].toInt();
         qDebug() << "play->lifespan" << play->lifespan;
     }
+    if(json.contains("player_speed") && json["player_speed"].isDouble())
+    {
+        play->m_speed = json["player_speed"].toDouble();
+        qDebug() << "play->speed" << play->m_speed;
+    }
     if(json.contains("player_x") && json["player_x"].isDouble())
         play->m_x = json["player_x"].toDouble();
     if(json.contains("player_y") && json["player_y"].isDouble())
         play->m_y = json["player_y"].toDouble();
     if(json.contains("coins") && json["coins"].isDouble())
         subject::coins = json["coins"].toInt();
-
+    if(json.contains("ishavepets") && json["ishavepets"].isDouble())
+    {
+        ishavepet = json["ishavepets"].toInt();
+        qDebug() << "ishavepets" << ishavepet;
+    }
+    loadFile.close();
 }
 
 

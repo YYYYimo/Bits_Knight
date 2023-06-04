@@ -1,11 +1,13 @@
 #include "subject.h"
 #include "bullet.h"
+#include "pet.h"
 #include <algorithm>
 #include <QDebug>
 QSharedPointer<Player> subject::play_p = nullptr;
 QVector<QSharedPointer<Enemy>> subject::enevec;
 QVector<QSharedPointer<Bullet>> subject::bullvec;
 QVector<QSharedPointer<DropItem>> subject::dropvec;
+QSharedPointer<Pet> subject::pet = nullptr;
 int subject::coins = 0;
 
  subject::subject()
@@ -59,6 +61,11 @@ void subject::removedropPointer(QSharedPointer<DropItem> e)
 void subject::adddropPointer(QSharedPointer<DropItem> e)
 {
     dropvec.push_back(e);
+}
+
+void subject::addpetPointer(QSharedPointer<Pet> e)
+{
+    pet = e;
 }
 
 

@@ -12,6 +12,7 @@ Player::Player()
     exp = 1;
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
+    grabKeyboard();
 
     keyRespondTimer = new QTimer(this);	//Create a timer object and connect signals and slots in the constructor
     connect(keyRespondTimer, &QTimer::timeout, this, &Player::slotTimeOut);
@@ -97,7 +98,6 @@ void Player::keyReleaseEvent(QKeyEvent *event)
 
 void Player::slotTimeOut()
 {
-        //pickupItem();
     qreal dx = 0;
     qreal dy = 0;
     foreach (int key, keys) {
@@ -163,25 +163,6 @@ void Player::attack()
         QSharedPointer<Bullet> bull = QSharedPointer<Bullet>(new Bullet(m_type, m_x, m_y, pl));
         scene()->addItem(bull.data());
         addbullPointer(bull);
-    }
-}
-
-void Player::pickupItem()
-{
-    QList<QGraphicsItem*> collisions = collidingItems();
-    if(!collisions.isEmpty())
-    {
-        DropItem *drop = qgraphicsitem_cast<DropItem*>(collisions[qrand() % collisions.size()]);
-        if(drop)
-        {
-            if(drop->type == 4)
-            {                
-                coins += 1;
-            }
-            //else
-            QSharedPointer<DropItem> dropitem = QSharedPointer<DropItem>(drop);
-            drop->rmdropItem(dropitem);
-        }
     }
 }
 

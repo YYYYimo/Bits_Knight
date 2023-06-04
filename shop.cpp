@@ -5,7 +5,11 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMovie>
-Shop::Shop(QWidget *parent):QWidget(parent)
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
+#include <QDebug>
+Shop::Shop()
 {
     // 创建 QLabel 用于显示 "Shop" 字样
     QLabel *titleLabel = new QLabel("Shop", this);
@@ -48,9 +52,9 @@ Shop::Shop(QWidget *parent):QWidget(parent)
     textLabel3->setFont(font1);
     textLabel3->setAlignment(Qt::AlignCenter);
 
-    QPushButton *button1 = new QPushButton("choose it", this);
-    QPushButton *button2 = new QPushButton("choose it", this);
-    QPushButton *button3 = new QPushButton("choose it", this);
+    QPushButton *button1 = new QPushButton("$10", this);
+    QPushButton *button2 = new QPushButton("$20", this);
+    QPushButton *button3 = new QPushButton("$50", this);
 
 
     // 创建垂直布局，将 GIF 图片和文字描述作为一组添加到布局中
@@ -105,17 +109,103 @@ Shop::Shop(QWidget *parent):QWidget(parent)
 
 }
 
+void Shop::savefile(QJsonObject json)
+{
+    QJsonDocument saveDoc(json); // 将 json 对象转换为 JSON 文档
+    QByteArray saveData = saveDoc.toJson(); // 将 JSON 文档序列化为 JSON 字符串
+
+    QFile saveFile(QStringLiteral("D:/Qt_project/night/save.json"));
+    if (!saveFile.open(QIODevice::WriteOnly))
+    {
+        qWarning("Couldn't open the file for writing.");
+    }
+    else
+    {
+        saveFile.write(saveData); // 将 JSON 字符串写入文件
+        saveFile.close();
+    }
+}
+
 void Shop::addSpeed()
 {
+    QFile loadFile( QStringLiteral("D:/Qt_project/night/save.json"));
 
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open save file.");
+    }
+
+    QByteArray saveData1 = loadFile.readAll();
+    QJsonDocument loadDoc( QJsonDocument::fromJson(saveData1));
+    QJsonObject json = loadDoc.object();
+    if (json.contains("player_speed") && json["player_speed"].isDouble())
+    {
+        int nowspeed = json["player_speed"].toDouble();
+        json.insert("player_speed", nowspeed + 2);
+    }
+    loadFile.close();
+
+    savefile(json);
+
+    StartMenu* startmenu = new StartMenu();
+    startmenu->resize(1200, 1200);
+    startmenu->show();
+
+    this->close();
 }
 
 void Shop::addAttack()
 {
+    QFile loadFile( QStringLiteral("D:/Qt_project/night/save.json"));
 
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open save file.");
+    }
+
+    QByteArray saveData = loadFile.readAll();
+    QJsonDocument loadDoc( QJsonDocument::fromJson(saveData));
+    QJsonObject json = loadDoc.object();
+    if(json.contains("player_att") && json["player_att"].isDouble())
+    {
+        int nowatt = json["player_att"].toInt();
+        json.insert("player_att", nowatt + 2);
+    }
+    loadFile.close();
+
+    savefile(json);
+
+    StartMenu* startmenu = new StartMenu();
+    startmenu->resize(1200, 1200);
+    startmenu->show();
+    this->close();
 }
 
 void Shop::havePets()
 {
+    QFile loadFile( QStringLiteral("D:/Qt_project/night/save.json"));
+
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open save file.");
+    }
+
+    QByteArray saveData = loadFile.readAll();
+    QJsonDocument loadDoc( QJsonDocument::fromJson(saveData));
+    QJsonObject json = loadDoc.object();
+    if(json.contains("ishavepets") && json["ishavepets"].isDouble())
+    {
+        json.insert("ishavepets", 1);
+    }
+    if(json.contains("player_hp") && json["player_hp"].isDouble())
+    {
+        int nowhp = json["player_hp"].toInt();
+        json.insert("player_hp", nowhp + 5);
+    }
+    loadFile.close();
+
+    savefile(json);
+
+    StartMenu* startmenu = new StartMenu();
+    startmenu->resize(1200, 1200);
+    startmenu->show();
+    this->close();
 
 }

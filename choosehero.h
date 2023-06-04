@@ -8,7 +8,7 @@ class choosehero: public QWidget
 {
     Q_OBJECT
 public:
-    choosehero(QWidget *parent);
+    choosehero();
     ~choosehero(){}
     void startGame(int hero_type);
 private:

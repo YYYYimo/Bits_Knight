@@ -2,7 +2,7 @@
 #include <QPushButton>
 #include <QDebug>
 #include <QMovie>
-choosehero::choosehero(QWidget *parent):QWidget(parent)
+choosehero::choosehero()
 {
     setFixedSize(1200, 1200);
     QPixmap bgimg("://resource/img/choosehero.png");
@@ -56,10 +56,8 @@ choosehero::choosehero(QWidget *parent):QWidget(parent)
 
 void choosehero::startGame(int hero_type)
 {
-    QWidget* gamew = new QWidget();
-    gamew->resize(1200, 1200);
-    setParent(gamew);
-    gamewindow = new GameWindow(gamew, hero_type, 0);
-    gamew->show();
+    gamewindow = new GameWindow(hero_type, 0);
+    gamewindow->resize(1200,1200);
+    gamewindow->show();
     this->close();
 }

@@ -28,10 +28,11 @@ class GameWindow : public QWidget, public subject
     Q_OBJECT
 public:
     enum SaveFormat {Json};
-    GameWindow(QWidget *parent, int player_type, int isRenew);
+    GameWindow(int player_type, int isRenew);
     ~GameWindow();
     void addplayer(int type);
     void addenemy(int type);
+    void addpet();
     void setgameTimerLabel();
     void checkPlayerstate();
     void pauseGame();
@@ -51,11 +52,12 @@ public:
 private slots:
     void updateGame(); //用于刷新游戏界面
     void updateTimerLabel(); //用于更新计时器数字显示
-    void resumeGame();
-    void saveGame();
-    void loadGame();
+    void resumeGame();//重启游戏
+    void saveGame();//保存游戏
+    void loadGame();//加载游戏
     
 private:
+    int ishavepet; //玩家是否拥有宠物
     QTimer* timer; //用于刷新游戏界面
     QTimer* gameTimer; //用于记录游戏开始时间
     QLabel* timerLabel; //用于显示计时器时间

@@ -6,6 +6,7 @@ class Player;
 class Enemy;
 class Bullet;
 class DropItem;
+class Pet;
 class subject
 {
 public:
@@ -17,12 +18,14 @@ public:
     static void removebullPointer(QSharedPointer<Bullet> e);
     static void adddropPointer(QSharedPointer<DropItem> e);
     static void removedropPointer(QSharedPointer<DropItem> e);
+    static void addpetPointer(QSharedPointer<Pet> e);
 
 
     static QSharedPointer<Player> play_p;//需要访问
     static QVector<QSharedPointer<Enemy>> enevec;
     static QVector<QSharedPointer<Bullet>> bullvec;
     static QVector<QSharedPointer<DropItem>> dropvec;
+    static QSharedPointer<Pet> pet;
     static int coins;
 };
 
