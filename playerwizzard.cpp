@@ -3,7 +3,7 @@
 playerwizzard::playerwizzard()
 {
     m_type = 2;
-    m_hp = 10;
+    m_hp = 20;
     m_attack = 1;
     width = 70;
     height = 110;

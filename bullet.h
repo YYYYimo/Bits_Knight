@@ -11,18 +11,21 @@
 #include "enemy.h"
 #include "player.h"
 #include "subject.h"
-enum bullettype {angel, elf, wizzard};
+enum bullettype {angel, elf, wizzard, _zombie};
+enum directtype {_Right = 0, _Down = 1, _Left = 2, _Up = 3};
 class Bullet : public QGraphicsItem, public subject, public QObject, public QEnableSharedFromThis<Bullet>
 {
 public:
     Bullet(int t, qreal x, qreal y, QSharedPointer<Player> pl);
+    Bullet(int t, qreal x, qreal y, int direction, QSharedPointer<Player> pl);
     Bullet(Bullet*){} //
     ~Bullet(){}
     
     QRectF boundingRect() const override;
     void setPos(qreal x, qreal y);
     void advance();
-    void attack();
+    void attackEne();
+    void attackPla();
     void bullmove();
     void rmbullet();
 
@@ -32,6 +35,7 @@ private:
     int m_atk;
     int width;
     int height;
+    int direct;
     QString imgpath;
     qreal m_x;
     qreal m_y;

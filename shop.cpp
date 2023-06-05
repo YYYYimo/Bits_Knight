@@ -56,9 +56,34 @@ Shop::Shop()
     QPushButton *button2 = new QPushButton("$20", this);
     QPushButton *button3 = new QPushButton("$50", this);
 
+    QFile loadFile( QStringLiteral("D:/Qt_project/night/save.json"));
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open save file.");
+    }
+    QByteArray saveData = loadFile.readAll();
+    QJsonDocument loadDoc( QJsonDocument::fromJson(saveData));
+    QJsonObject json = loadDoc.object();
+    if(json.contains("coins") && json["coins"].isDouble())
+    {
+        coins = json["coins"].toInt();
+    }
+    loadFile.close();
 
-    // 创建垂直布局，将 GIF 图片和文字描述作为一组添加到布局中
+    QHBoxLayout *imageLayout = new QHBoxLayout;
+    QLabel *imageLabel = new QLabel;
+    QMovie *imageMovie = new QMovie("://resource/gif/coin.gif");  // 加载 GIF 图片
+    imageLabel->setMovie(imageMovie);
+    imageLabel->setFixedSize(30, 30);
+    imageLabel->setScaledContents(true);
+    imageMovie->start();
+    QString text = QString::number(coins);
+    QLabel *textLabel = new QLabel(text);
+    textLabel->setFont(font1);
+    imageLayout->addWidget(imageLabel);
+    imageLayout->addWidget(textLabel);
+
     QVBoxLayout *layout0 = new QVBoxLayout;
+    layout0->insertLayout(0, imageLayout);
     layout0->addWidget(titleLabel);
     layout0->setContentsMargins(10, 10, 10, 10);  // 设置外边距
     layout0->setSpacing(20);  // 设置间距
@@ -128,6 +153,11 @@ void Shop::savefile(QJsonObject json)
 
 void Shop::addSpeed()
 {
+    if(coins < 10)
+    {
+        qDebug() << "can't afford";
+        return;
+    }
     QFile loadFile( QStringLiteral("D:/Qt_project/night/save.json"));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
@@ -142,6 +172,11 @@ void Shop::addSpeed()
         int nowspeed = json["player_speed"].toDouble();
         json.insert("player_speed", nowspeed + 2);
     }
+    if(json.contains("coins") && json["coins"].isDouble())
+    {
+        coins -= 10;
+        json.insert("coins", coins);
+    }
     loadFile.close();
 
     savefile(json);
@@ -155,6 +190,11 @@ void Shop::addSpeed()
 
 void Shop::addAttack()
 {
+    if(coins < 20)
+    {
+        qDebug() << "can't afford";
+        return;
+    }
     QFile loadFile( QStringLiteral("D:/Qt_project/night/save.json"));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
@@ -169,6 +209,11 @@ void Shop::addAttack()
         int nowatt = json["player_att"].toInt();
         json.insert("player_att", nowatt + 2);
     }
+    if(json.contains("coins") && json["coins"].isDouble())
+    {
+        coins -= 20;
+        json.insert("coins", coins);
+    }
     loadFile.close();
 
     savefile(json);
@@ -181,6 +226,11 @@ void Shop::addAttack()
 
 void Shop::havePets()
 {
+    if(coins < 50)
+    {
+        qDebug() << "can't afford";
+        return;
+    }
     QFile loadFile( QStringLiteral("D:/Qt_project/night/save.json"));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
@@ -198,6 +248,11 @@ void Shop::havePets()
     {
         int nowhp = json["player_hp"].toInt();
         json.insert("player_hp", nowhp + 5);
+    }
+    if(json.contains("coins") && json["coins"].isDouble())
+    {
+        coins -= 50;
+        json.insert("coins", coins);
     }
     loadFile.close();
 

@@ -1,12 +1,13 @@
 {
-    "coins": 0,
+    "coins": 8,
+    "curtime": 175,
     "ishavepets": 1,
-    "player_att": 2,
-    "player_exp": 8,
-    "player_hp": 15,
-    "player_lifespan": 7,
-    "player_speed": 1.5,
-    "player_type": 1,
-    "player_x": 501,
-    "player_y": 540
+    "player_att": 11,
+    "player_exp": 176,
+    "player_hp": 9,
+    "player_lifespan": 167,
+    "player_speed": 1,
+    "player_type": 2,
+    "player_x": 581,
+    "player_y": 177
 }

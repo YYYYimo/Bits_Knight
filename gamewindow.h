@@ -6,7 +6,6 @@
 #include <QGraphicsScene>
 #include <QTimer>
 #include <QLabel>
-#include <QDateTime>
 #include <QString>
 #include <QVector>
 #include <QSharedDataPointer>
@@ -45,7 +44,6 @@ public:
     QSharedPointer<Player> play;
     int playerType;
     bool isGamepause;
-    QDateTime startTime;
     QGraphicsView* view;
     QGraphicsScene* scene;
     

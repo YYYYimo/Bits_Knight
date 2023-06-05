@@ -29,6 +29,7 @@ public:
     void uplevel();  // todo: 怪物生成一段时间后自动升级为大怪物
     void takeDamage(int dam);
     void attack();
+    void shot();
 
     void setMovie(const QString& path);
     void setSpeed(qreal speed);

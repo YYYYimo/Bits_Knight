@@ -28,6 +28,13 @@ QRectF Player::boundingRect() const
     return QRectF(m_x, m_y, width, height);
 }
 
+QPainterPath Player::shape() const
+{
+    QPainterPath path;
+    path.addEllipse(boundingRect());
+    return path;
+}
+
 void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option)

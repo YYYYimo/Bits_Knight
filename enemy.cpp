@@ -3,10 +3,8 @@
 #include "gamewindow.h"
 #include <QPixmap>
 #include <QMovie>
-#include <QtMath>
 #include <QDebug>
 #include <QList>
-#define PI 3.1415926
 Enemy::Enemy()
  : m_type(0), m_hp(0), m_attack(0), m_x(0), m_y(0), m_speed(0), m_movie(nullptr)
 {
@@ -32,7 +30,7 @@ void Enemy::setType(int t)
 
 QRectF Enemy::boundingRect() const
 {
-    return QRectF(m_x, m_y, width, height);
+    return QRectF(m_x, m_y - 10, width, height + 10);
 }
 
 void Enemy::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -46,7 +44,7 @@ void Enemy::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     int barHeight = 5;  // 血条高度
     int barX = m_x + (width - barWidth) / 2;  // 血条的 x 坐标居中对齐
     int barY = m_y - barHeight - 5;  // 血条的 y 坐标位于怪物图像上方一定距离
-
+    painter->eraseRect(barX, barY, barWidth, barHeight);
     // 绘制血条的底色
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::gray);
@@ -167,6 +165,8 @@ void Enemy::updateEnemy()
 {
     lifespan++;
     attack();
+    if(lifespan % 5 == 1)
+        shot();
 }
 
 void Enemy::takeDamage(int dam)
@@ -179,6 +179,16 @@ void Enemy::attack()
     if(collidesWithItem(play.data(), Qt::IntersectsItemBoundingRect))
     {
         play->takeDamage(m_attack);
+    }
+}
+
+void Enemy::shot()
+{
+    if(m_type == zombie)
+    {
+        QSharedPointer<Bullet> bull = QSharedPointer<Bullet>(new Bullet(3, m_x, m_y, direct, play));
+        scene()->addItem(bull.data());
+        addbullPointer(bull);
     }
 }
 

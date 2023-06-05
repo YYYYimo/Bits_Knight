@@ -69,16 +69,23 @@ CustomDialog::CustomDialog(QSharedPointer<Player> p, int ty, QWidget* parent)
     }
     else if(type == 0)
     {
-        QLabel *label = new QLabel("YOU LOSE", this);
-        label->setAlignment(Qt::AlignCenter);
+        QLabel *imageLabel = new QLabel(this);
+        QPixmap imagePixmap("://resource/img/LOSE.png");  // 替换为你的图片路径
+        imageLabel->setPixmap(imagePixmap);
+        imageLabel->setAlignment(Qt::AlignCenter);
 
-        // 创建 QPushButton 控件来关闭游戏
+        // 给对话框设置标题
+        setWindowTitle("LOSE GAME");
+
+        // 改变对话框的大小以适应图片大小
+        resize(imagePixmap.size());
+
         QPushButton *closeButton = new QPushButton("Close Game", this);
         connect(closeButton, &QPushButton::clicked, this, &CustomDialog::closeGame);
 
-        // 创建垂直布局，并将控件添加到布局中
+        // 创建垂直布局，并将图片控件和按钮控件添加到布局中
         QVBoxLayout *layout = new QVBoxLayout;
-        layout->addWidget(label);
+        layout->addWidget(imageLabel);
         layout->addWidget(closeButton);
 
         // 设置布局到对话框中
@@ -86,8 +93,12 @@ CustomDialog::CustomDialog(QSharedPointer<Player> p, int ty, QWidget* parent)
     }
     else if(type == 1)
     {
-        QLabel *label = new QLabel("YOU WIN", this);
-        label->setAlignment(Qt::AlignCenter);
+        QLabel *imageLabel = new QLabel(this);
+        QPixmap imagePixmap("://resource/img/WIN.png");  // 替换为你的图片路径
+        imageLabel->setPixmap(imagePixmap);
+        imageLabel->setAlignment(Qt::AlignCenter);
+
+        setWindowTitle("WIN GAME");
 
         // 创建 QPushButton 控件来关闭游戏
         QPushButton *closeButton = new QPushButton("Close Game", this);
@@ -95,7 +106,7 @@ CustomDialog::CustomDialog(QSharedPointer<Player> p, int ty, QWidget* parent)
 
         // 创建垂直布局，并将控件添加到布局中
         QVBoxLayout *layout = new QVBoxLayout;
-        layout->addWidget(label);
+        layout->addWidget(imageLabel);
         layout->addWidget(closeButton);
 
         // 设置布局到对话框中
@@ -112,13 +123,13 @@ void CustomDialog::OnAcceptHp()
 
 void CustomDialog::OnAcceptAtt()
 {
-    play->setAttack(5);
+    play->setAttack(2);
     close();
 }
 
 void CustomDialog::OnAcceptSpeed()
 {
-    play->setSpeed(5);
+    play->setSpeed(2);
     close();
 }
 

@@ -16,6 +16,7 @@ class Player : public QGraphicsObject, public subject, public QEnableSharedFromT
 public:
     Player();
     QRectF boundingRect() const override;
+    QPainterPath shape() const override;
     void setMovie(const QString& path);
     void setSpeed(qreal speed);
     void setPos(qreal x, qreal y);

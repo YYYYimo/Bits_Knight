@@ -31,5 +31,8 @@
         <file>resource/img/bulletForWizzard.png</file>
         <file>resource/gif/shop_heart.gif</file>
         <file>resource/gif/shop_weapon.gif</file>
+        <file>resource/img/bulletForZombie.png</file>
+        <file>resource/img/LOSE.png</file>
+        <file>resource/img/WIN.png</file>
     </qresource>
 </RCC>

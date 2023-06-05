@@ -31,7 +31,6 @@ GameWindow::GameWindow(int player_type, int isRenew):
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGame()));
     timer->start(15);
-    startTime = QDateTime::currentDateTime();//记录游戏开始的时间
     setgameTimerLabel();
 
     lastenemytype = 1;
@@ -242,12 +241,8 @@ void GameWindow::updateTimerLabel()
         pauseGame();
     addenemy(lastenemytype);
      //顺便产生新的敌人
-    QDateTime currentTime = QDateTime::currentDateTime();
-    // 计算时间差（毫秒）
-    qint64 elapsedTime = startTime.msecsTo(currentTime);
-    // 转换为分钟和秒钟
-    int minutes = static_cast<int>(elapsedTime / 60000);
-    int seconds = static_cast<int>((elapsedTime % 60000) / 1000);
+    int minutes = curtime / 60;
+    int seconds = curtime % 60;
     // 格式化时间字符串
     QString timeStr = QString("%1:%2")
             .arg(minutes, 2, 10, QChar('0'))
@@ -276,9 +271,8 @@ void GameWindow::checkPlayerstate()
         gameTimer->stop();
         endGame(0);
     }
-    if(curtime == 120)
+    if(curtime == 240)
     {
-
         timer->stop();
         gameTimer->stop();
         endGame(1);
@@ -289,11 +283,13 @@ void GameWindow::checkPlayerstate()
 void GameWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
+        timer->stop();
+        gameTimer->stop();
         saveGame();
         StartMenu* startmenu = new StartMenu();
         startmenu->resize(1200, 1200);
         startmenu->show();
-        this->close();
+        close();
     }
 }
 
@@ -391,6 +387,7 @@ void GameWindow::saveGame()
     jsonObject.insert("player_y", play->m_y);
     jsonObject.insert("coins", subject::coins);
     jsonObject.insert("ishavepets", ishavepet);
+    jsonObject.insert("curtime", curtime);
 // 使用QJsonDocument设置该json对象
     QJsonDocument jsonDoc;
     jsonDoc.setObject(jsonObject);
@@ -453,6 +450,11 @@ void GameWindow::loadGame()
     {
         ishavepet = json["ishavepets"].toInt();
         qDebug() << "ishavepets" << ishavepet;
+    }
+    if(json.contains("curtime") && json["curtime"].isDouble())
+    {
+        curtime = json["curtime"].toInt();
+        qDebug() << "curtime" << curtime;
     }
     loadFile.close();
 }

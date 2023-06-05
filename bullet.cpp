@@ -11,6 +11,7 @@
 Bullet::Bullet(int t, qreal x, qreal y, QSharedPointer<Player> pl):m_type(t), m_x(x), m_y(y)
 {
     //子弹发射时选定一个离玩家最近的敌人，并持续追踪
+    direct = 0;
     qreal mindis = std::numeric_limits<qreal>::max();
     target = nullptr;
     QVector<QSharedPointer<Enemy>>::Iterator it = enevec.begin();
@@ -32,7 +33,7 @@ Bullet::Bullet(int t, qreal x, qreal y, QSharedPointer<Player> pl):m_type(t), m_
     {
     case angel:
     {
-        m_speed = 2;
+        m_speed = 5;
         m_atk = 2;
         imgpath = "://resource/img/bulletForangle.png";
         break;
@@ -45,10 +46,22 @@ Bullet::Bullet(int t, qreal x, qreal y, QSharedPointer<Player> pl):m_type(t), m_
         break;
     }
     case wizzard:
-        m_speed = 3;
+        m_speed = 5;
         m_atk = 2;
         imgpath = "://resource/img/bulletForWizzard.png";
     }
+    updatetime = new QTimer(this);
+    connect(updatetime, &QTimer::timeout, this, &Bullet::slotTimeOut);
+    updatetime->start(15);
+}
+
+Bullet::Bullet(int t, qreal x, qreal y, int direction, QSharedPointer<Player> pl): m_type(t), m_x(x), m_y(y), direct(direction)
+{
+    target = nullptr;
+    play = pl;
+    m_speed = 5;
+    m_atk = 1;
+    imgpath = "://resource/img/bulletForZombie.png";
     updatetime = new QTimer(this);
     connect(updatetime, &QTimer::timeout, this, &Bullet::slotTimeOut);
     updatetime->start(15);
@@ -130,9 +143,31 @@ void Bullet::bullmove()
         }
         setPos(m_x, m_y);
     }
-    else
+    else if(target == nullptr && m_type != _zombie)
     {
         rmbullet();
+    }
+    else
+    {
+        qreal dx = 0;
+        qreal dy = 0;
+        if(direct == _Right)
+        {
+            dx = m_speed;
+        }
+        else if(direct == _Down)
+        {
+            dy = m_speed;
+        }
+        else if(direct == _Left)
+        {
+            dx = -m_speed;
+        }
+        else
+        {
+            dy = -m_speed;
+        }
+        setPos(m_x + dx, m_y + dy);
     }
 }
 
@@ -143,9 +178,7 @@ void Bullet::advance()
     //判断子弹是否超出场景范围
     if(!scene()->sceneRect().contains(newPos))
     {
-        scene()->removeItem(this);
-        delete this;
-        return;
+        rmbullet();
     }
 }
 
@@ -157,23 +190,33 @@ void Bullet::rmbullet()
     scene()->removeItem(bull.data());
 }
 
-void Bullet::attack()
+void Bullet::attackEne()
 {
     int damage = play->m_attack;
     if(collidesWithItem(target.data(), Qt::IntersectsItemBoundingRect))
     {
         target->takeDamage(damage);
-        updatetime->stop();
-        QSharedPointer<Bullet> bull = sharedFromThis();
-        //removebullPointer(bull);
-        scene()->removeItem(bull.data());
+        rmbullet();
     }
 }
+
+void Bullet::attackPla()
+{
+    if(collidesWithItem(play.data(), Qt::IntersectsItemBoundingRect))
+    {
+        play->takeDamage(m_atk);
+        rmbullet();
+    }
+}
+
 
 void Bullet::slotTimeOut()
 {
     bullmove();
-    attack();
+    if(m_type != _zombie)
+        attackEne();
+    else
+        attackPla();
 }
 
 
