@@ -13,6 +13,9 @@ int GameWindow::enemynum = 0;
 GameWindow::GameWindow(int player_type, int isRenew):
         curtime(0), playerType(player_type)
 {
+    setWindowTitle("Bits Knight");
+    QIcon icon("://resource/img/gameico.ico");
+    setWindowIcon(icon);
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,1500,1200);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);//设置不适用索引

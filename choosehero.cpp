@@ -4,6 +4,9 @@
 #include <QMovie>
 choosehero::choosehero()
 {
+    setWindowTitle("Bits Knight");
+    QIcon icon("://resource/img/gameico.ico");
+    setWindowIcon(icon);
     setFixedSize(1200, 1200);
     QPixmap bgimg("://resource/img/choosehero.png");
     QLabel *bgLabel = new QLabel(this);

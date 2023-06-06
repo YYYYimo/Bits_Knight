@@ -9,6 +9,7 @@
 
 StartMenu::StartMenu(QWidget *parent):QWidget(parent)
 {
+    setWindowTitle("Bits Knight");
     setFixedSize(1200, 1200);
     QPixmap bgimg("://resource/img/startpage.jpg");
     QLabel *bgLabel = new QLabel(this);

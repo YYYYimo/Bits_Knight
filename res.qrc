@@ -34,5 +34,6 @@
         <file>resource/img/bulletForZombie.png</file>
         <file>resource/img/LOSE.png</file>
         <file>resource/img/WIN.png</file>
+        <file>resource/img/gameico.ico</file>
     </qresource>
 </RCC>
